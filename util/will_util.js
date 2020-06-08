@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from '@/App'
-
+import QQMapWX from './qqmap-wx-jssdk.js';
+Vue.prototype.qqmap = new QQMapWX({
+	key: 'LKVBZ-RATWD-KBD4N-HSW3M-HWJZF-JJFN5' // 必填
+});
 Vue.prototype.isLoad = function() {
 	if (!uni.getStorageSync('user_mark_id')) {
 		return false

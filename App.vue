@@ -38,6 +38,9 @@
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 	}
+	.flex1{
+		flex: 1;
+	}
 	
 	.mc {
 		._mcMain {

@@ -22,7 +22,7 @@
 		</view>
 
 		<view class="section houseType bg-white flex justify-between">
-			<view v-for="(item, index) in houseType" :key="index" class="item">
+			<view @click="navgater('/pages/index/houseList', '推荐')" v-for="(item, index) in houseType" :key="index" class="item">
 				<image :src="item.pic" mode="scaleToFill"></image>
 				<view class="title textov1">{{ item.title }}</view>
 				<view class="desc textov1">{{ item.desc }}</view>
@@ -35,9 +35,55 @@
 				<text class="desc">专业的买房攻略</text>
 			</view>
 			<view class="itemBox flex justify-between">
-				<view v-for="(item, index) in encyclopedias" :key="index" class="item flex flex-direction justify-between align-center">
+				<view @click="navgater('/pages/index/forum', item.title)"  v-for="(item, index) in encyclopedias" :key="index" class="item flex flex-direction justify-between align-center">
 					<image :src="item.icon" mode="widthFix"></image>
 					<text>{{ item.title }}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="section dayNewsBox bg-white">
+			<view class="sectionTitBox"><text class="title">每日要讯</text></view>
+			<view  @click="navgater('/pages/index/articleDetail', item.id)"  v-for="(item, index) in dayNewsList" :key="index" class="newsItem flex justify-between">
+				<view style="flex: 1;" class="flex flex-direction justify-between">
+					<view class="title textov2">{{ item.title }}</view>
+					<view class="dateBox">
+						<text>{{ item.num }}评论</text>
+						<text>{{ item.date }}</text>
+					</view>
+				</view>
+				<image :src="item.pic" mode="aspectFill"></image>
+			</view>
+			<view class="noMore">没有更多了</view>
+		</view>
+
+		<view class="section guessYouLike bg-white">
+			<view class="sectionTitBox"><text class="title">猜你喜欢</text></view>
+			<view class="videoBox">
+				<view class="titBox">
+					<view class="tit">{{ guessYouLike.videoInfo.title }}</view>
+					<view class="moneyBox flex justify-between align-center">
+						<text>{{ guessYouLike.videoInfo.num }}分</text>
+						<text class="money">{{ guessYouLike.videoInfo.money }}元/平</text>
+					</view>
+				</view>
+				<video :src="guessYouLike.videoInfo.videoSrc" controls></video>
+			</view>
+			<view @click="navgater('/pages/index/houseDetail', item.id)" v-for="(item, index) in guessYouLike.list" :key="index" class="item bg-white flex">
+				<image :src="item.pic" mode="scaleToFill"></image>
+				<view class="rightBox flex flex-direction justify-between">
+					<view class="name">{{ item.name }}</view>
+					<view class="time flex align-center justify-between">
+						<view>{{ item.year }}</view>
+						<view class="money text-red">{{ item.money }}元/平</view>
+					</view>
+					<view>
+						<text>{{ item.size1 }}</text>
+						<text class="size">{{ item.size2 }}m²</text>
+					</view>
+					<view class="type">
+						<text v-for="(type, index) in item.type" :key="index">#{{ type }}</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -58,21 +104,21 @@ export default {
 					{ name: '找小区', icon: '/static/indexmenu5.png', color: '#5ec7af', page: '/pages/index/houseList' },
 					{ name: '我要卖房', icon: '/static/indexmenu6.png', color: '#619ef6', page: '/pages/index/sellHouse' },
 					{ name: '我要出租', icon: '/static/indexmenu7.png', color: '#5bb9dd', page: '/pages/index/sellHouse' },
-					{ name: '写字楼', icon: '/static/indexmenu8.png', color: '#ec5d7f' },
+					{ name: '写字楼', icon: '/static/indexmenu8.png', color: '#ec5d7f', page: '/pages/index/houseList' },
 					{ name: '经纪人', icon: '/static/indexmenu9.png', color: '#d9c18e', page: '/pages/index/brokerList' },
 					{ name: '房产公司', icon: '/static/indexmenu10.png', color: '#66acf4', page: '/pages/index/realCompanyList' }
 				],
 				[
-					{ name: '业主论坛', icon: '/static/indexmenu11.png', color: '#ee9045' },
-					{ name: '房市热讯', icon: '/static/indexmenu12.png', color: '#f2ae56' },
-					{ name: '好视频', icon: '/static/indexmenu13.png', color: '#57b4d9' },
-					{ name: '排行榜', icon: '/static/indexmenu14.png', color: '#e95857' },
-					{ name: '装修日记', icon: '/static/indexmenu15.png', color: '#ec6689' },
-					{ name: '装修攻略', icon: '/static/indexmenu16.png', color: '#70b436' },
-					{ name: '装饰公司', icon: '/static/indexmenu17.png', color: '#619ef6' },
-					{ name: '设计师', icon: '/static/indexmenu18.png', color: '#5ec7af' },
+					{ name: '业主论坛', icon: '/static/indexmenu11.png', color: '#ee9045', page: '/pages/index/ownersForum' },
+					{ name: '房市热讯', icon: '/static/indexmenu12.png', color: '#f2ae56', page: '/pages/index/houseHotNews' },
+					{ name: '好视频', icon: '/static/indexmenu13.png', color: '#57b4d9', page: '/pages/index/goodVideo' },
+					{ name: '排行榜', icon: '/static/indexmenu14.png', color: '#e95857', page: '/pages/index/rankingList' },
+					{ name: '装修日记', icon: '/static/indexmenu15.png', color: '#ec6689', page: '/pages/index/forum' },
+					{ name: '装修攻略', icon: '/static/indexmenu16.png', color: '#70b436', page: '/pages/index/forum' },
+					{ name: '装饰公司', icon: '/static/indexmenu17.png', color: '#619ef6', page: '/pages/index/decorationCompany' },
+					{ name: '设计师', icon: '/static/indexmenu18.png', color: '#5ec7af', page: '/pages/index/designerList' },
 					{ name: '建材家具', icon: '/static/indexmenu19.png', color: '#d9c18e' },
-					{ name: '装修报价', icon: '/static/indexmenu20.png', color: '#6aaef4' }
+					{ name: '装修报价', icon: '/static/indexmenu20.png', color: '#6aaef4', page: '/pages/index/forum' }
 				]
 			],
 			houseType: [
@@ -86,14 +132,62 @@ export default {
 				{ title: '知识', icon: '/static/encyclopedia3.png' },
 				{ title: '贷款', icon: '/static/encyclopedia4.png' },
 				{ title: '经纪人', icon: '/static/encyclopedia5.png' }
-			]
+			],
+			dayNewsList: [
+				{
+					title: '三四线城市房价的快速上涨既出乎意料又在情理之中。因为大家因为大家因为大家',
+					num: 7,
+					date: '2020-04-08',
+					pic: 'https://i.picsum.photos/id/740/750/350.jpg',
+					id:'123'
+				},
+				{
+					title: '三四线城市房价的快速上涨既出乎意料又在情理之中。因为大家因为大家因为大家',
+					num: 7,
+					date: '2020-04-08',
+					pic: 'https://i.picsum.photos/id/740/750/350.jpg',
+					id:'323'
+				}
+			],
+			guessYouLike: {
+				videoInfo: {
+					title: '卓越东部海岸',
+					num: '4.1',
+					money: '13700',
+					videoSrc: ''
+				},
+				list: [
+					{
+						name: '山芋清辉',
+						year: '2017',
+						area: '宝安区',
+						money: '77000',
+						size1: '三室',
+						size2: '90',
+						type: ['普通住宅'],
+						id: '123',
+						pic: 'https://i.picsum.photos/id/482/750/350.jpg'
+					},
+					{
+						name: '山芋清辉',
+						year: '2017',
+						area: '宝安区',
+						money: '77000',
+						size1: '三室',
+						size2: '90',
+						type: ['普通住宅'],
+						id: '123',
+						pic: 'https://i.picsum.photos/id/482/750/350.jpg'
+					}
+				]
+			}
 		};
 	},
 	onLoad() {},
 	methods: {
 		navgater(path, name) {
 			uni.navigateTo({
-				url: path + '?title=' + name
+				url: path + '?title=' + name+"&id="+name
 			});
 		}
 	}
@@ -199,6 +293,91 @@ export default {
 				font-size: 28rpx;
 				color: #666;
 				margin-top: 10px;
+			}
+		}
+	}
+}
+.dayNewsBox {
+	.newsItem {
+		padding: 20rpx 25rpx;
+		border-bottom: 1rpx solid #e9e9e9;
+		.title {
+			color: #333333;
+			font-size: 28rpx;
+		}
+		.dateBox {
+			font-size: 24rpx;
+			color: #999;
+			margin-right: 10rpx;
+			& > text {
+			}
+		}
+		& > image {
+			width: 250rpx;
+			height: 200rpx;
+			margin-left: 20rpx;
+		}
+	}
+	.noMore {
+		line-height: 100rpx;
+		font-size: 28rpx;
+		color: #666;
+		text-align: center;
+	}
+}
+.guessYouLike {
+	.videoBox {
+		padding-bottom: 25rpx;
+		border-bottom: 1rpx solid #ededed;
+		.titBox {
+			padding: 0 25rpx;
+			.tit {
+				font-size: 28rpx;
+				color: #666;
+				line-height: 2em;
+				padding-top: 10rpx;
+			}
+			.moneyBox {
+				font-size: 24rpx;
+				color: #999;
+				margin-bottom: 14rpx;
+				.money {
+					font-size: 29rpx;
+					color: #f53530;
+					font-weight: 700;
+				}
+			}
+		}
+		video {
+			width: 100%;
+			height: 320rpx;
+		}
+	}
+	.item {
+		padding: 20rpx;
+		border-bottom: 1rpx solid #ededed;
+		&:last-child {
+			border: none;
+		}
+		& > image {
+			width: 300rpx;
+			height: 220rpx;
+			margin-right: 20rpx;
+		}
+		.rightBox {
+			font-size: 30rpx;
+			color: #999;
+			flex: 1;
+			.name,
+			.time {
+				color: #000;
+			}
+			.time .money {
+				font-size: 34rpx;
+				font-weight: 700;
+			}
+			.size {
+				margin-left: 50rpx;
 			}
 		}
 	}

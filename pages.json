@@ -20,22 +20,70 @@
 			"style": {
 				"navigationBarTitleText": "个人中心"
 			}
-		}
-	    ,{
-            "path" : "pages/index/houseList",
-            "style" : {}
+		}, {
+			"path": "pages/index/houseList",
+			"style": {}
+		}, {
+			"path": "pages/index/sellHouse",
+			"style": {}
+		}, {
+			"path": "pages/index/brokerList",
+			"style": {
+				"navigationBarTitleText": "经纪人"
+			}
+		}, {
+			"path": "pages/index/realCompanyList",
+			"style": {}
+		}, {
+			"path": "pages/index/ownersForum",
+			"style": {
+				"navigationBarTitleText": "业主论坛"
+			}
+		}, {
+			"path": "pages/index/houseHotNews",
+			"style": {
+				"navigationBarTitleText": "房市热讯"
+			}
+		}, {
+			"path": "pages/index/goodVideo",
+			"style": {
+				"navigationBarTitleText": "好视频"
+			}
+		} 
+        ,{
+            "path" : "pages/index/rankingList",
+            "style" : {
+				"navigationBarTitleText": "排行榜"
+			}
         }
         ,{
-            "path" : "pages/index/sellHouse",
+            "path" : "pages/index/forum",
             "style" : {}
+        } 
+        ,{
+            "path" : "pages/index/decorationCompany",
+            "style" : {
+				"navigationBarTitleText": "装饰公司"
+			}
         }
         ,{
-            "path" : "pages/index/brokerList",
-            "style" : {}
+            "path" : "pages/index/designerList",
+            "style" : {
+					"navigationBarTitleText": "设计师"
+			}
         }
         ,{
-            "path" : "pages/index/realCompanyList",
-            "style" : {}
+            "path" : "pages/index/articleDetail",
+            "style" : {
+					"navigationBarTitleText": "咨询详情"
+			}
+        }
+        ,{
+            "path" : "pages/index/houseDetail",
+            "style" : {
+				"navigationBarTitleText": "房源详情",
+				"navigationBarBackgroundColor":"#b60005"
+			}
         }
     ],
 	"tabBar": {
