@@ -1,20 +1,16 @@
 <template>
 	<!-- 资讯详情 -->
 	<view class="articleDetailView ">
-		<view class="bg-white" style="padding: 30rpx 25rpx;" >
-			<view class="articleTit">三四线城市房价的快速上涨及出乎意料又在情理之中。因为大量的购房需求仍然存在，但是并没有被刺激</view>
+		<view class="bg-white" style="padding: 30rpx 25rpx;">
+			<view class="articleTit text-center">{{ datail.title }}</view>
 			<view class="dateBox flex justify-between">
-				<view class="type">特价房</view>
-				<view class="date">2020-04-08 18:18:18</view>
+				<view class="type">新闻</view>
+				<view class="date">{{ datail.createTime }}</view>
 			</view>
-			<image class="contentPic" src="https://i.picsum.photos/id/740/750/350.jpg" mode="widthFix"></image>
-			<view class="contentDesc">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis quaerat nobis quas nisi unde ipsa dolorem cupiditate possimus sunt sit laudantium eos sequi
-				dolor. Facere ab assumenda recusandae error aliquid molestiae aut sunt iste possimus earum repudiandae eum dolor beatae atque porro doloremque labore ipsa.
-				Cupiditate sequi quas architecto laboriosam.
-			</view>
+			<!-- <image class="contentPic" :src="datail.url" mode="widthFix"></image> -->
+			<view class="contentDesc"><rich-text :nodes="datail.artContent"></rich-text></view>
 
-			<view class="adVIew flex align-center justify-between">
+			<!-- <view class="adVIew flex align-center justify-between">
 				<view class="left flex align-center">
 					<image src="/static/logo.png" mode=""></image>
 					<view class="flex flex1 flex-direction justify-between">
@@ -24,9 +20,7 @@
 				</view>
 				<button class="btn cu-btn bg-red">互动</button>
 			</view>
-			<view class="seeNum">
-				阅读 620
-			</view>
+			<view class="seeNum">阅读 620</view> -->
 		</view>
 	</view>
 </template>
@@ -35,17 +29,39 @@
 export default {
 	data() {
 		return {
-			id: ''
+			id: '',
+			datail: {}
 		};
 	},
 	onLoad(options) {
 		options.id ? (this.id = options.id) : '';
+		this.id && this.getDetail();
+	},
+	methods: {
+		getDetail() {
+			this.showLoading();
+			this.request({
+				url: '/LouPanInfo/selectByArtId',
+				data: {
+					id: this.id
+				},
+				success: res => {
+					uni.hideLoading();
+					console.log('资讯详情', res);
+					if (res.data.code === 200) {
+						res.data.data.artContent = res.data.data.artContent.replace(/section/gi, 'div');
+						res.data.data.artContent = res.data.data.artContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:block"');
+						this.datail = res.data.data;
+					}
+				}
+			});
+		}
 	}
 };
 </script>
 
 <style lang="scss">
-.articleDetailView { 
+.articleDetailView {
 	.articleTit {
 		font-size: 38rpx;
 		font-weight: 700;
@@ -98,7 +114,7 @@ export default {
 			width: 120rpx;
 		}
 	}
-	.seeNum{
+	.seeNum {
 		margin-top: 20px;
 		color: #999;
 		font-size: 24rpx;

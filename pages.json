@@ -75,7 +75,7 @@
         ,{
             "path" : "pages/index/articleDetail",
             "style" : {
-					"navigationBarTitleText": "咨询详情"
+					"navigationBarTitleText": "资讯详情"
 			}
         }
         ,{

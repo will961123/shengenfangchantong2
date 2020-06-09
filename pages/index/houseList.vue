@@ -8,19 +8,20 @@
 			<text>搜索</text>
 		</view>
 		<view v-for="(item, index) in list" :key="index" class="item bg-white flex">
-			<image :src="item.pic" mode="scaleToFill"></image>
+			<image :src="item.indexPic" mode="scaleToFill"></image>
 			<view class="rightBox flex flex-direction justify-between">
-				<view class="name">{{ item.name }}</view>
+				<view class="name">{{ item.louPanName }}</view>
 				<view class="time flex align-center justify-between">
-					<view>{{ title === '找租房' ? item.area : item.year }}</view>
-					<view class="money text-red">{{ item.money }}元/平</view>
+					<view>{{ title === '找租房' ? item.city : item.createTime }}</view>
+					<view class="money text-red">{{ item.price }}元/平</view>
 				</view>
-				<view>
-					<text>{{ item.size1 }}</text>
-					<text class="size">{{ item.size2 }}m²</text>
+				<view class="textov1">
+					<text>{{ item.houseType }}</text>
+					<text class="size">{{ item.houseArea }}</text>
 				</view>
 				<view class="type">
-					<text v-for="(type, index) in item.type" :key="index">#{{ type }}</text>
+					<view class="textov1">{{ item.lightSpot }}{{ item.lightSpot }}</view> 
+					<!-- <text v-for="(type, index) in item.type" :key="index">#{{ type }}</text> -->
 				</view>
 			</view>
 		</view>
@@ -32,30 +33,8 @@ export default {
 	data() {
 		return {
 			title: '买新房',
-			list: [
-				{
-					name: '山芋清辉',
-					year: '2017',
-					area: '宝安区',
-					money: '77000',
-					size1: '三室',
-					size2: '90',
-					type: ['普通住宅'],
-					id: '123',
-					pic: 'https://i.picsum.photos/id/482/750/350.jpg'
-				},
-				{
-					name: '山芋清辉',
-					year: '2017',
-					area: '宝安区',
-					money: '77000',
-					size1: '三室',
-					size2: '90',
-					type: ['普通住宅'],
-					id: '123',
-					pic: 'https://i.picsum.photos/id/482/750/350.jpg'
-				}
-			]
+			houseListPage: 1,
+			list: []
 		};
 	},
 	onLoad(options) {
@@ -63,6 +42,37 @@ export default {
 		uni.setNavigationBarTitle({
 			title: this.title
 		});
+
+		switch (this.title) {
+			case '买新房':
+				this.getNewHouseList();
+				break;
+		}
+	},
+	onReachBottom() {
+		this.getNewHouseList();
+	},
+	methods: {
+		getNewHouseList() {
+			this.request({
+				url: '/LouPanInfo/getAllLouPan',
+				data: {
+					page: this.houseListPage,
+					limit: 10
+				},
+				success: res => {
+					console.log('买新房', res);
+					if (res.data.code === 0) {
+						this.houseListPage++;
+						res.data.data = res.data.data.map(i => {
+							i.createTime = i.createTime.split('-')[0];
+							return i;
+						});
+						this.list.push(...res.data.data);
+					}
+				}
+			});
+		}
 	}
 };
 </script>
@@ -106,8 +116,8 @@ export default {
 		}
 		.rightBox {
 			font-size: 30rpx;
-			color: #999;
-			flex: 1;
+			color: #999; 
+			width: calc(100% - 320rpx);
 			.name,
 			.time {
 				color: #000;

@@ -2,42 +2,42 @@
 	<view>
 		<view class="detail">
 			<swiper indicator-dots="false" autoplay="true" class="imgSwiper" @click="navImg">
-				<swiper-item v-for="(item, index) in houseInfo.banner" :key="index" class="bra6">
-					<image :src="item" mode="aspectFill"></image>
-					<view class="lengthBox">共{{ houseInfo.banner.length }}张</view>
+				<swiper-item v-for="(item, index) in houseInfo.picUrlList" :key="index" class="bra6">
+					<image :src="item.picUrl" mode="aspectFill"></image>
+					<view class="lengthBox">共{{ houseInfo.picUrlList.length }}张</view>
 				</swiper-item>
 			</swiper>
 			<view style="padding:0 30rpx">
 				<view class="content">
 					<view class="houseInfo bra6">
 						<view class="state">
-							<text v-if="houseInfo.inSell" class="bra6 red">在售</text>
-							<text v-for="(item, index) in houseInfo.type" :key="index" class="bra6">{{item,}}</text>
+							<text class="bra6 red">{{ houseInfo.saleStatus == '1' ? '在售' : '待售' }}</text>
+							<text v-for="(item, index) in houseInfo.lightSpot" :key="index" class="bra6">{{ item }}</text>
 						</view>
 						<view style="padding:0  30rpx 30rpx 30rpx; background-color: #fdeaec;">
 							<view class="projectName">
-								<view>{{ houseInfo.loupanName }}</view>
+								<view>{{ houseInfo.louPanName }}</view>
 								<text class="morebox" @click="moreInfo">更多详情</text>
 							</view>
-							<view class="projectNameRemark grey">备案名：{{ houseInfo.loupanName }}</view>
+							<view class="projectNameRemark grey">备案名：{{ houseInfo.louPanName }}</view>
 							<view class="buyPeoples"></view>
-							<view class="price">约{{ houseInfo.money }}元/m²起</view>
+							<view class="price">约{{ houseInfo.price }}元/m²起</view>
 							<view @click="cellPhone" class="tel  " style="font-size:26rpx">
 								<text class="grey">电话：</text>
-								<text class="tel1">{{ houseInfo.phone }}</text>
+								<text class="tel1">{{ houseInfo.telephone }}</text>
 								<text style="float: right;font-size: 34rpx;" class="cuIcon cuIcon-phone text-red "></text>
 							</view>
 							<view style="display:flex;align-items:center;margin-top:8px;" class="address elli justify-between" @click="map">
 								<view style="display:flex;align-items:center;">
 									<view class="grey" style="font-size:26rpx">地址：</view>
-									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.loupanAddress }}</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.address }}</view>
 								</view>
 								<text style="float: right;font-size: 34rpx;" class=" text-red cuIcon cuIcon-locationfill"></text>
 							</view>
 						</view>
 					</view>
 					<!-- 项目展示图片 -->
-					<view class="videoEnter bra6 mb30"><image mode="aspectFill" :src="houseInfo.loupanAdPic"></image></view>
+					<!-- <view class="videoEnter bra6 mb30"><image mode="aspectFill" :src="houseInfo.loupanAdPic"></image></view> -->
 				</view>
 				<!-- 户型区域 -->
 				<view class="hx_detailBox" style="margin-bottom: 30rpx;border-radius: 6rpx;">
@@ -46,12 +46,12 @@
 						<view class="hx_more" @click="moreHuXing">查看更多 ></view>
 					</view>
 					<swiper class="imgSwiper " style="margin-bottom: 30rpx;" display-mviewtiple-items="1.5" previous-margin="20rpx">
-						<swiper-item v-for="(item, index) in houseInfo.huxing" :key="index" class="swiperItem" style="border-radius: 6rpx;" @click="huxingClick">
-							<view class="pic"><image :src="item.pic" mode="aspectFill"></image></view>
+						<swiper-item v-for="(item, index) in houseInfo.layoutInfo" :key="index" class="swiperItem" style="border-radius: 6rpx;" @click="huxingClick">
+							<view class="pic"><image :src="item.layoutPic" mode="aspectFill"></image></view>
 							<view>
-								<text class="tit">{{ item.name }}</text>
+								<text class="tit">{{ item.layoutStructure }}</text>
 							</view>
-							<view class="area">建面（约）{{ item.size }}㎡</view>
+							<view class="area">建面（约）{{ item.layoutArea }}㎡</view>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -59,11 +59,11 @@
 				<view class="news bra6 mb30">
 					<view class="hx_box"><view class="hx_title">企业新闻</view></view>
 					<view>
-						<view v-for="(item, index) in houseInfo.newsList" :key="index" class="li" @click="newsInfo">
-							<view class="pic"><image :src="item.pic" mode="aspectFill"></image></view>
+						<view v-for="(item, index) in newsList" :key="index" class="li" @click="goToNewsInfo(item.id)">
+							<view class="pic"><image :src="item.url" mode="aspectFill"></image></view>
 							<view class="rightContent">
-								<view class="title">{{ item.tit }}</view>
-								<view style="font-size: 22rpx;color:#666" class="singleInfo">{{ item.date }}</view>
+								<view class="title">{{ item.title }}</view>
+								<view style="font-size: 22rpx;color:#666" class="singleInfo">{{ item.createTime }}</view>
 							</view>
 						</view>
 					</view>
@@ -72,13 +72,13 @@
 				<view class="projectAddress ">
 					<view class="hx_box">
 						<view class="hx_title">周边配套</view>
-						<view class="hx_more" @click="map" data-location="河南省漯河市">查看更多</view>
+						<view class="hx_more" @click="map">查看更多</view>
 					</view>
 					<view class="addressBox">
-						<image src="https://i.picsum.photos/id/740/750/350.jpg" mode="widthFix"></image>
-						<view class="ad_address  drift" @click="map" data-location="河南省漯河市">
+						<image src="/static/house_address-min.jpg" mode="widthFix"></image>
+						<view class="ad_address  drift" @click="map">
 							<view class="name elli flex align-center justify-around">
-								<text>{{ houseInfo.loupanName }}</text>
+								<text class="text-bold">{{ houseInfo.louPanName }}</text>
 								<text style="font-size: 34rpx;" class="cuIcon text-red cuIcon-locationfill"></text>
 							</view>
 						</view>
@@ -90,12 +90,12 @@
 						</view>
 					</view>
 					<view class="tabContent">
-						<view v-for="(item, index) in houseInfo.peitaoList[peitaoIdx]" :key="index" class="tabContentItem">
-							<view class="name elli">{{ item.name }}</view>
-							<view class="remote" style="font-size:#999;font-size:22rpx">{{ item.len }}m</view>
+						<view v-for="(item, index) in peitaoList" :key="index" class="tabContentItem">
+							<view class="name elli">{{ item.title }}</view>
+							<view class="remote" style="font-size:#999;font-size:22rpx">{{ item._distance }}m</view>
 						</view>
 					</view>
-					<view class="around bra6" @click="map" data-location="河南省漯河市">查看更多周边概况</view>
+					<view class="around bra6" @click="map">查看更多周边概况</view>
 				</view>
 			</view>
 		</view>
@@ -106,6 +106,7 @@
 export default {
 	data() {
 		return {
+			id: '',
 			peitao: [
 				{ pic: '/static/encyclopedia1.png', name: '交通' },
 				{ pic: '/static/encyclopedia1.png', name: '学校' },
@@ -114,72 +115,144 @@ export default {
 				{ pic: '/static/encyclopedia1.png', name: '餐饮' }
 			],
 			peitaoIdx: 0,
-			houseInfo: {
-				banner: ['https://i.picsum.photos/id/740/750/350.jpg', 'https://i.picsum.photos/id/740/750/350.jpg', 'https://i.picsum.photos/id/740/750/350.jpg'],
-				inSell: true,
-				type: ['南北通透', '交通便利'],
-				loupanName: '东润翰悦府',
-				money: 23333,
-				phone: 1599999999, 
-				loupanAddress: '河南省漯河市郾城区银都大酒店',
-				loupanAdPic: 'https://i.picsum.photos/id/740/750/350.jpg',
-				huxing: [
-					{ pic: 'https://i.picsum.photos/id/740/750/350.jpg', name: '三室两厅两卫', size: '128-233' },
-					{ pic: 'https://i.picsum.photos/id/740/750/350.jpg', name: '三室两厅两卫', size: '128-233' },
-					{ pic: 'https://i.picsum.photos/id/740/750/350.jpg', name: '三室两厅两卫', size: '128-233' }
-				],
-				newsList: [
-					{
-						pic: 'https://i.picsum.photos/id/740/750/350.jpg',
-						tit: '新闻资讯',
-						date: '2020-08-09'
-					},
-					{
-						pic: 'https://i.picsum.photos/id/740/750/350.jpg',
-						tit: '新闻资讯',
-						date: '2020-08-09'
-					},
-					{
-						pic: 'https://i.picsum.photos/id/740/750/350.jpg',
-						tit: '新闻资讯',
-						date: '2020-08-09'
-					}
-				],
-				peitaoList: [
-					[{ name: '石油公司[公交站]', len: '266.05' }, { name: '石油公司[公交站]', len: '266.05' }, { name: '石油公司[公交站]', len: '266.05' }],
-					[{ name: '石油公司[学校]', len: '266.05' }, { name: '石油公司[学校]', len: '266.05' }, { name: '石油公司[学校]', len: '266.05' }],
-					[{ name: '石油公司[医疗]', len: '266.05' }, { name: '石油公司[医疗]', len: '266.05' }, { name: '石油公司[医疗]', len: '266.05' }],
-					[{ name: '石油公司[购物]', len: '266.05' }, { name: '石油公司[购物]', len: '266.05' }, { name: '石油公司[购物]', len: '266.05' }],
-					[{ name: '石油公司[餐饮]', len: '266.05' }, { name: '石油公司[餐饮]', len: '266.05' }, { name: '石油公司[餐饮]', len: '266.05' }]
-				]
+			peitaoList: [],
+			houseInfo: {},
+			newsList: [],
+			location: {
+				lng: '',
+				lat: ''
 			}
 		};
 	},
-	onLoad() {},
+	onLoad(options) {
+		if (options.id) {
+			this.id = options.id;
+			this.getDetail();
+			this.getNewsList()
+		}
+	},
 	methods: {
-		map() {
-			this.qqmap.geocoder({
-				address: this.houseInfo.loupanAddress,
-				type:'wgs84',
-				success: res => {
-					console.log('经纬度', res);
-					let latitude = res.result.location.lat;
-					let longitude = res.result.location.lng;
-					uni.openLocation({
-						type:'wgs84',
-						latitude: latitude,
-						longitude: longitude,
-						address: this.houseInfo.loupanAddress
-					});
+		getNewsList() {
+			this.request({
+				url: '/LouPanInfo/selectArticleById',
+				data: {
+					louPanId: this.id
 				},
-				fail: error => {
-					console.error(error);
+				success: res => {
+					console.log('新闻列表', res);
+					if (res.data.code === 200) {
+						this.newsList = res.data.data;
+					}
 				}
 			});
 		},
-
+		getDetail() {
+			this.showLoading();
+			this.request({
+				url: '/LouPanInfo/detail',
+				data: {
+					louPanId: this.id
+				},
+				success: res => {
+					uni.hideLoading();
+					console.log('楼盘详情', res);
+					if (res.data.code === 200) {
+						res.data.data.lightSpot = res.data.data.lightSpot.split(',');
+						this.houseInfo = res.data.data;
+						this.getAround(this.peitao[0].name);
+					}
+				}
+			});
+		},
+		goToNewsInfo(id){
+			uni.navigateTo({
+				url:'/pages/index/articleDetail?id='+id
+			})
+		},
+		map() {
+			if (!this.location.lng) {
+				this.qqmap.geocoder({
+					address: this.houseInfo.address,
+					type: 'gcj02',
+					success: res => {
+						console.log('经纬度', res);
+						let latitude = res.result.location.lat;
+						let longitude = res.result.location.lng;
+						this.location.lng = longitude;
+						this.location.lat = latitude;
+						uni.openLocation({
+							type: 'gcj02',
+							latitude: latitude,
+							longitude: longitude,
+							address: this.houseInfo.address
+						});
+					},
+					fail: error => {
+						console.error(error);
+					}
+				});
+			} else {
+				let latitude = this.location.lat;
+				let longitude = this.location.lng;
+				uni.openLocation({
+					type: 'gcj02',
+					latitude: latitude,
+					longitude: longitude,
+					address: this.houseInfo.address
+				});
+			}
+		},
+		getAround(keyword) {
+			if (!this.location.lng) {
+				this.qqmap.geocoder({
+					// address: '河南省漯河市郾城区银都大酒店',
+					address: this.houseInfo.address,
+					type: 'gcj02',
+					success: res => {
+						console.log('经纬度', res);
+						let latitude = res.result.location.lat;
+						let longitude = res.result.location.lng;
+						this.location.lng = longitude;
+						this.location.lat = latitude;
+						this.qqmap.search({
+							keyword,
+							location: `${latitude},${longitude}`,
+							success: res => {
+								console.log('搜索周边', res);
+								if (res.status === 0) {
+									this.peitaoList = res.data;
+								}
+							},
+							fail: err => {
+								console.log('搜索周边err', err);
+							}
+						});
+					},
+					fail: error => {
+						console.error(error);
+					}
+				});
+			} else {
+				let latitude = this.location.lat;
+				let longitude = this.location.lng;
+				this.qqmap.search({
+					keyword,
+					location: `${latitude},${longitude}`,
+					success: res => {
+						console.log('搜索周边', res);
+						if (res.status === 0) {
+							this.peitaoList = res.data;
+						}
+					},
+					fail: err => {
+						console.log('搜索周边err', err);
+					}
+				});
+			}
+		},
 		changePeitaoIdx(idx) {
 			this.peitaoIdx = idx;
+			this.getAround(this.peitao[idx].name);
 		},
 		cellPhone() {
 			if (!this.houseInfo.phone) {

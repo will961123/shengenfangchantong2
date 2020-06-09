@@ -35,7 +35,12 @@
 				<text class="desc">专业的买房攻略</text>
 			</view>
 			<view class="itemBox flex justify-between">
-				<view @click="navgater('/pages/index/forum', item.title)"  v-for="(item, index) in encyclopedias" :key="index" class="item flex flex-direction justify-between align-center">
+				<view
+					@click="navgater('/pages/index/forum', item.title)"
+					v-for="(item, index) in encyclopedias"
+					:key="index"
+					class="item flex flex-direction justify-between align-center"
+				>
 					<image :src="item.icon" mode="widthFix"></image>
 					<text>{{ item.title }}</text>
 				</view>
@@ -44,22 +49,22 @@
 
 		<view class="section dayNewsBox bg-white">
 			<view class="sectionTitBox"><text class="title">每日要讯</text></view>
-			<view  @click="navgater('/pages/index/articleDetail', item.id)"  v-for="(item, index) in dayNewsList" :key="index" class="newsItem flex justify-between">
+			<view @click="navgater('/pages/index/articleDetail', item.id)" v-for="(item, index) in dayNewsList" :key="index" class="newsItem flex justify-between">
 				<view style="flex: 1;" class="flex flex-direction justify-between">
 					<view class="title textov2">{{ item.title }}</view>
 					<view class="dateBox">
-						<text>{{ item.num }}评论</text>
-						<text>{{ item.date }}</text>
+						<!-- <text>{{ item.num }}评论</text> -->
+						<text>{{ item.createTime }}</text>
 					</view>
 				</view>
-				<image :src="item.pic" mode="aspectFill"></image>
+				<image :src="item.url" mode="aspectFill"></image>
 			</view>
 			<view class="noMore">没有更多了</view>
 		</view>
 
 		<view class="section guessYouLike bg-white">
 			<view class="sectionTitBox"><text class="title">猜你喜欢</text></view>
-			<view class="videoBox">
+			<!-- <view class="videoBox">
 				<view class="titBox">
 					<view class="tit">{{ guessYouLike.videoInfo.title }}</view>
 					<view class="moneyBox flex justify-between align-center">
@@ -68,21 +73,22 @@
 					</view>
 				</view>
 				<video :src="guessYouLike.videoInfo.videoSrc" controls></video>
-			</view>
-			<view @click="navgater('/pages/index/houseDetail', item.id)" v-for="(item, index) in guessYouLike.list" :key="index" class="item bg-white flex">
-				<image :src="item.pic" mode="scaleToFill"></image>
+			</view> -->
+			<view @click="navgater('/pages/index/houseDetail', item.louPanId)" v-for="(item, index) in guessYouLike.list" :key="index" class="item bg-white flex">
+				<image :src="item.indexPic" mode="scaleToFill"></image>
 				<view class="rightBox flex flex-direction justify-between">
-					<view class="name">{{ item.name }}</view>
+					<view class="name">{{ item.louPanName }}</view>
 					<view class="time flex align-center justify-between">
-						<view>{{ item.year }}</view>
-						<view class="money text-red">{{ item.money }}元/平</view>
+						<view>{{ item.createTime }}</view>
+						<view class="money text-red">{{ item.price }}元/平</view>
 					</view>
-					<view>
-						<text>{{ item.size1 }}</text>
-						<text class="size">{{ item.size2 }}m²</text>
+					<view class="textov1">
+						<text>{{ item.houseType }}</text>
+						<text class="size">{{ item.houseArea }}</text>
 					</view>
-					<view class="type">
-						<text v-for="(type, index) in item.type" :key="index">#{{ type }}</text>
+					<view class="type ">
+						<view class="textov1">{{ item.lightSpot }}{{ item.lightSpot }}</view>
+						<!-- <text v-for="(type, index) in item.type" :key="index">#{{ type }}</text> -->
 					</view>
 				</view>
 			</view>
@@ -133,22 +139,8 @@ export default {
 				{ title: '贷款', icon: '/static/encyclopedia4.png' },
 				{ title: '经纪人', icon: '/static/encyclopedia5.png' }
 			],
-			dayNewsList: [
-				{
-					title: '三四线城市房价的快速上涨既出乎意料又在情理之中。因为大家因为大家因为大家',
-					num: 7,
-					date: '2020-04-08',
-					pic: 'https://i.picsum.photos/id/740/750/350.jpg',
-					id:'123'
-				},
-				{
-					title: '三四线城市房价的快速上涨既出乎意料又在情理之中。因为大家因为大家因为大家',
-					num: 7,
-					date: '2020-04-08',
-					pic: 'https://i.picsum.photos/id/740/750/350.jpg',
-					id:'323'
-				}
-			],
+			dayNewsList: [ ],
+			guessYouLikePage: 1,
 			guessYouLike: {
 				videoInfo: {
 					title: '卓越东部海岸',
@@ -156,38 +148,54 @@ export default {
 					money: '13700',
 					videoSrc: ''
 				},
-				list: [
-					{
-						name: '山芋清辉',
-						year: '2017',
-						area: '宝安区',
-						money: '77000',
-						size1: '三室',
-						size2: '90',
-						type: ['普通住宅'],
-						id: '123',
-						pic: 'https://i.picsum.photos/id/482/750/350.jpg'
-					},
-					{
-						name: '山芋清辉',
-						year: '2017',
-						area: '宝安区',
-						money: '77000',
-						size1: '三室',
-						size2: '90',
-						type: ['普通住宅'],
-						id: '123',
-						pic: 'https://i.picsum.photos/id/482/750/350.jpg'
-					}
-				]
+				list: []
 			}
 		};
 	},
-	onLoad() {},
+	onLoad() {
+		this.getdayNewsList()
+		this.getGuessYouLike();
+		
+	},
+	onReachBottom() {
+		this.getGuessYouLike();
+	},
 	methods: {
+		getdayNewsList() {
+			this.request({
+				url: '/LouPanInfo/selectArticleById',
+				data: {},
+				success: res => {
+					console.log('每日要讯', res);
+					if (res.data.code === 200) {
+						this.dayNewsList = res.data.data
+					}
+				}
+			});
+		},
+		getGuessYouLike() {
+			this.request({
+				url: '/LouPanInfo/getAllLouPan',
+				data: {
+					page: this.guessYouLikePage,
+					limit: 10
+				},
+				success: res => {
+					console.log('猜您喜欢列表', res);
+					if (res.data.code === 0) {
+						this.guessYouLikePage++;
+						res.data.data = res.data.data.map(i => {
+							i.createTime = i.createTime.split('-')[0];
+							return i;
+						});
+						this.guessYouLike.list.push(...res.data.data);
+					}
+				}
+			});
+		},
 		navgater(path, name) {
 			uni.navigateTo({
-				url: path + '?title=' + name+"&id="+name
+				url: path + '?title=' + name + '&id=' + name
 			});
 		}
 	}
@@ -367,7 +375,7 @@ export default {
 		.rightBox {
 			font-size: 30rpx;
 			color: #999;
-			flex: 1;
+			width: calc(100% - 320rpx);
 			.name,
 			.time {
 				color: #000;
