@@ -49,43 +49,61 @@
 			"style": {
 				"navigationBarTitleText": "好视频"
 			}
-		} 
-        ,{
-            "path" : "pages/index/rankingList",
-            "style" : {
+		}, {
+			"path": "pages/index/rankingList",
+			"style": {
 				"navigationBarTitleText": "排行榜"
 			}
-        }
-        ,{
-            "path" : "pages/index/forum",
-            "style" : {}
-        } 
-        ,{
-            "path" : "pages/index/decorationCompany",
-            "style" : {
+		}, {
+			"path": "pages/index/forum",
+			"style": {}
+		}, {
+			"path": "pages/index/decorationCompany",
+			"style": {
 				"navigationBarTitleText": "装饰公司"
 			}
-        }
-        ,{
-            "path" : "pages/index/designerList",
-            "style" : {
-					"navigationBarTitleText": "设计师"
+		}, {
+			"path": "pages/index/designerList",
+			"style": {
+				"navigationBarTitleText": "设计师"
 			}
-        }
-        ,{
-            "path" : "pages/index/articleDetail",
-            "style" : {
-					"navigationBarTitleText": "资讯详情"
+		}, {
+			"path": "pages/index/articleDetail",
+			"style": {
+				"navigationBarTitleText": "资讯详情"
 			}
-        }
-        ,{
-            "path" : "pages/index/houseDetail",
-            "style" : {
+		}, {
+			"path": "pages/index/houseDetail",
+			"style": {
 				"navigationBarTitleText": "房源详情",
-				"navigationBarBackgroundColor":"#b60005"
+				"navigationBarBackgroundColor": "#b60005"
 			}
-        }
-    ],
+		}, {
+			"path": "pages/index/houseTypeDetail",
+			"style": {
+				"navigationBarTitleText": "户型详情",
+				"navigationBarBackgroundColor": "#b60005"
+			}
+		}, {
+			"path": "pages/index/moreHouseTypeList",
+			"style": {
+				"navigationBarTitleText": "更多户型",
+				"navigationBarBackgroundColor": "#b60005"
+			}
+		}, {
+			"path": "pages/index/houseMoreInfo",
+			"style": {
+				"navigationBarTitleText": "更多详情",
+				"navigationBarBackgroundColor": "#b60005"
+			}
+		}, {
+			"path": "pages/index/houseDetailImg",
+			"style": {
+				"navigationBarTitleText": "房源详情",
+				"navigationBarBackgroundColor": "#b60005"
+			}
+		}
+	],
 	"tabBar": {
 		"backgroundColor": "#ffffff",
 		"color": "#8a8a8a",

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="detail">
-			<swiper indicator-dots="false" autoplay="true" class="imgSwiper" @click="navImg">
+			<swiper indicator-dots="false" autoplay="true" class="imgSwiper" @click="gotoGouseDetailImg">
 				<swiper-item v-for="(item, index) in houseInfo.picUrlList" :key="index" class="bra6">
 					<image :src="item.picUrl" mode="aspectFill"></image>
 					<view class="lengthBox">共{{ houseInfo.picUrlList.length }}张</view>
@@ -17,7 +17,7 @@
 						<view style="padding:0  30rpx 30rpx 30rpx; background-color: #fdeaec;">
 							<view class="projectName">
 								<view>{{ houseInfo.louPanName }}</view>
-								<text class="morebox" @click="moreInfo">更多详情</text>
+								<text class="morebox" @click="goToMoreInfo">更多详情</text>
 							</view>
 							<view class="projectNameRemark grey">备案名：{{ houseInfo.louPanName }}</view>
 							<view class="buyPeoples"></view>
@@ -43,10 +43,16 @@
 				<view class="hx_detailBox" style="margin-bottom: 30rpx;border-radius: 6rpx;">
 					<view class="hx_box">
 						<view class="hx_title">户型推荐</view>
-						<view class="hx_more" @click="moreHuXing">查看更多 ></view>
+						<view class="hx_more" @click="gotoHouseTypeList">查看更多 ></view>
 					</view>
 					<swiper class="imgSwiper " style="margin-bottom: 30rpx;" display-mviewtiple-items="1.5" previous-margin="20rpx">
-						<swiper-item v-for="(item, index) in houseInfo.layoutInfo" :key="index" class="swiperItem" style="border-radius: 6rpx;" @click="huxingClick">
+						<swiper-item
+							v-for="(item, index) in houseInfo.layoutInfo"
+							:key="index"
+							class="swiperItem"
+							style="border-radius: 6rpx;"
+							@click="gotoHouseTypeDetail(item.layoutId)"
+						>
 							<view class="pic"><image :src="item.layoutPic" mode="aspectFill"></image></view>
 							<view>
 								<text class="tit">{{ item.layoutStructure }}</text>
@@ -108,11 +114,11 @@ export default {
 		return {
 			id: '',
 			peitao: [
-				{ pic: '/static/encyclopedia1.png', name: '交通' },
-				{ pic: '/static/encyclopedia1.png', name: '学校' },
-				{ pic: '/static/encyclopedia1.png', name: '医疗' },
-				{ pic: '/static/encyclopedia1.png', name: '购物' },
-				{ pic: '/static/encyclopedia1.png', name: '餐饮' }
+				{ pic: '/static/houseInfoPT1.png', name: '交通' },
+				{ pic: '/static/houseInfoPT2.png', name: '学校' },
+				{ pic: '/static/houseInfoPT3.png', name: '医疗' },
+				{ pic: '/static/houseInfoPT4.png', name: '购物' },
+				{ pic: '/static/houseInfoPT5.png', name: '餐饮' }
 			],
 			peitaoIdx: 0,
 			peitaoList: [],
@@ -128,10 +134,30 @@ export default {
 		if (options.id) {
 			this.id = options.id;
 			this.getDetail();
-			this.getNewsList()
+			this.getNewsList();
 		}
 	},
 	methods: {
+		gotoGouseDetailImg(){
+			uni.navigateTo({
+				url: '/pages/index/houseDetailImg?id=' + this.id
+			});
+		},
+		goToMoreInfo(){
+			uni.navigateTo({
+				url: '/pages/index/houseMoreInfo?id=' + this.id
+			});
+		},
+		gotoHouseTypeList() {
+			uni.navigateTo({
+				url: '/pages/index/moreHouseTypeList?id=' + this.id
+			});
+		},
+		gotoHouseTypeDetail(id) {
+			uni.navigateTo({
+				url: '/pages/index/houseTypeDetail?id=' + id
+			});
+		},
 		getNewsList() {
 			this.request({
 				url: '/LouPanInfo/selectArticleById',
@@ -164,10 +190,10 @@ export default {
 				}
 			});
 		},
-		goToNewsInfo(id){
+		goToNewsInfo(id) {
 			uni.navigateTo({
-				url:'/pages/index/articleDetail?id='+id
-			})
+				url: '/pages/index/articleDetail?id=' + id
+			});
 		},
 		map() {
 			if (!this.location.lng) {
@@ -255,7 +281,7 @@ export default {
 			this.getAround(this.peitao[idx].name);
 		},
 		cellPhone() {
-			if (!this.houseInfo.phone) {
+			if (!this.houseInfo.telephone) {
 				uni.showModal({
 					title: '提示',
 					content: '暂未设置联系方式',
@@ -264,7 +290,7 @@ export default {
 				return false;
 			}
 			uni.makePhoneCall({
-				phoneNumber: '' + this.houseInfo.phone
+				phoneNumber: '' + this.houseInfo.telephone
 			});
 		}
 	}
