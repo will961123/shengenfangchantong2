@@ -3,11 +3,11 @@
 		<view class="section bg-white">
 			<view class="item flex align-center">
 				<view class="tit">所在区域</view>
-				<view class="iptbox flex align-center"><input type="text" value="" placeholder="请输入所在区域" /></view>
+				<view class="iptbox flex align-center"><input :disabled="true" @click="openChooseAddress" type="text" v-model="formData.area" placeholder="请输入所在区域" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">所属小区</view>
-				<view class="iptbox flex align-center"><input type="text" value="" placeholder="请输入所属小区" /></view>
+				<view class="iptbox flex align-center"><input type="text" v-model="formData.housingEstate" placeholder="请输入所属小区" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">装修类型</view>
@@ -26,39 +26,40 @@
 		<view class="section bg-white">
 			<view class="item flex align-center">
 				<view class="tit">房屋名称</view>
-				<view class="iptbox flex align-center"><input type="text" value="" placeholder="请输入房屋名称" /></view>
+				<view class="iptbox flex align-center"><input type="text" v-model="formData.houseName" placeholder="请输入房屋名称" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">{{ title === '我要出租' ? '租金（单位：元）' : '售价（单位：万元）' }}</view>
-				<view class="iptbox flex align-center"><input type="digit" value="" :placeholder="title === '我要出租' ? '请输入租金' : '请输入售价'" /></view>
-			</view> 
+				<view class="iptbox flex align-center"><input type="digit" v-model="formData.price" :placeholder="title === '我要出租' ? '请输入租金' : '请输入售价'" /></view>
+			</view>
 			<view class="item flex align-center">
 				<view class="tit">户型</view>
-				<view class="iptbox flex align-center"><input type="text" value="" placeholder="请输入户型" /></view>
+				<view class="iptbox flex align-center"><input type="text" v-model="formData.apartmentLayout" placeholder="请输入户型" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">年代</view>
-				<view class="iptbox flex align-center"><input type="text" value="" placeholder="请输入年代" /></view>
+				<picker mode="date" @change="bindPickerChange($event, 3)"><input type="text" :disabled="true" v-model="formData.year" placeholder="请输入年代" /></picker>
+				<!-- <view class="iptbox flex align-center"><input type="text" v-model="formData.year" placeholder="请输入年代" /></view> -->
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">面积（单位：m²）</view>
-				<view class="iptbox flex align-center"><input type="digit" value="" placeholder="请输入面积" /></view>
+				<view class="iptbox flex align-center"><input type="digit" v-model="formData.mianji" placeholder="请输入面积" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">楼层</view>
-				<view class="iptbox flex align-center"><input type="number" value="" placeholder="请输入楼层" /></view>
+				<view class="iptbox flex align-center"><input type="number" v-model="formData.floor" placeholder="请输入楼层" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">手机号</view>
-				<view class="iptbox flex align-center"><input type="number" value="" placeholder="请输入手机号" /></view>
+				<view class="iptbox flex align-center"><input type="number" v-model="formData.phone" placeholder="请输入手机号" /></view>
 			</view>
 			<view class="item flex align-center">
 				<view class="tit">标签</view>
-				<view class="iptbox flex align-center"><input type="text" value="" placeholder="请输入标签" /></view>
+				<view class="iptbox flex align-center"><input type="text" v-model="formData.label" placeholder="请输入标签" /></view>
 			</view>
 			<view class="item item2">
 				<view class="tit">房屋描述</view>
-				<textarea value="" placeholder="请输入房屋描述" />
+				<textarea v-model="formData.houseDescribe" placeholder="请输入房屋描述" />
 			</view>
 		</view>
 
@@ -77,7 +78,9 @@
 			</view>
 		</view>
 
-		<button class="cu-btn btn bg-green">提交</button>
+		<button @click="saveHoustInfo" class="cu-btn btn bg-green">提交</button>
+
+		<sunui-address ref="simpleAddress" :pickerValueDefault="cityPickerValueDefault" @onConfirm="bindPickerChange($event, 4)" themeColor="#007AFF"></sunui-address>
 	</view>
 </template>
 
@@ -91,7 +94,26 @@ export default {
 			useTypeList: ['住宅', '商铺'],
 			useType: -1,
 			imgList: [],
-			imgSrcList: []
+			imgSrcList: [],
+			formData: {
+				area: '区域', // 区域
+				housingEstate: '所属小区', //所属小区
+				decorationType: '装修类型', //装修类型
+				useType: '用途', //用途
+				houseName: '房屋名字', //房屋名字
+				price: '88.8', //房屋售价
+				apartmentLayout: '户型', //户型
+				year: '', //年代
+				mianji: '110', //面积
+				floor: '13', //楼层
+				phone: '15999999999', //手机号
+				label: '标签', //标签
+				houseDescribe: '描述', //描述
+				ids: '' // 图片
+			},
+
+			cityPickerValueDefault: [0, 0, 1],
+			pickerText: ''
 		};
 	},
 	onLoad(options) {
@@ -101,6 +123,104 @@ export default {
 		});
 	},
 	methods: {
+		onConfirm(e) {
+			console.log(e);
+		},
+		saveHoustInfo() {
+			let formData = this.formData;
+			if (!formData.area) {
+				this.showToast('请输入区域');
+				return false;
+			}
+			if (!formData.housingEstate) {
+				this.showToast('请输入所属小区');
+				return false;
+			}
+			if (this.decorationType < 0) {
+				this.showToast('请选择装修类型');
+				return false;
+			}
+			if (this.useType < 0) {
+				this.showToast('请选择装用途');
+				return false;
+			}
+			formData.decorationType = this.decorationTypeList[this.decorationType];
+			formData.useType = this.useTypeList[this.useType];
+			formData.rentSaleType = this.title === '我要卖房' ? 0 : 1;
+			if (!formData.houseName) {
+				this.showToast('请输入房屋名称');
+				return false;
+			}
+			if (!formData.price) {
+				this.showToast('请输入房屋价格');
+				return false;
+			}
+			if (!formData.apartmentLayout) {
+				this.showToast('请输入户型');
+				return false;
+			}
+			if (!formData.year) {
+				this.showToast('请输入年代');
+				return false;
+			}
+			if (!formData.mianji) {
+				this.showToast('请输入面积');
+				return false;
+			}
+			if (!formData.floor) {
+				this.showToast('请输入楼层');
+				return false;
+			}
+			if (!formData.phone) {
+				this.showToast('请输入手机号');
+				return false;
+			}
+			if (!this.checkPhone(formData.phone)) {
+				this.showToast('请输入正确手机号');
+				return false;
+			}
+			if (!formData.label) {
+				this.showToast('请输入标签');
+				return false;
+			}
+			if (!formData.houseDescribe) {
+				this.showToast('请输入描述');
+				return false;
+			}
+			if (this.imgSrcList.length <= 0) {
+				this.showToast('请上传图片');
+				return false;
+			}
+			formData.ids = this.imgSrcList.join(',');
+			console.log('formData', formData);
+			this.showLoading();
+			this.request({
+				url: '/rentSaleHouse/save',
+				data: formData,
+				success: res => {
+					uni.hideLoading();
+					console.log('save-type-' + this.title, res);
+					if (res.data.code === 200) {
+						uni.showModal({
+							title: '发布结果',
+							content: '发布成功！',
+							showCancel: false,
+							success: res => {
+								uni.switchTab({
+									url: '/pages/index/index'
+								});
+							}
+						});
+					} else {
+						uni.showModal({
+							title: '发布结果',
+							content: res.data.message || '发布失败！',
+							showCancel: false
+						});
+					}
+				}
+			});
+		},
 		ChooseImage() {
 			if (this.imgList.length > 3) {
 				return;
@@ -116,17 +236,21 @@ export default {
 						this.imgList = res.tempFilePaths;
 					}
 					this.showLoading();
+					let url = this.uploadUrl + '/rentSaleHouse/uploadRentPic';
+					if (this.title === '我要卖房') {
+						url = this.uploadUrl + '/rentSaleHouse/uploadSalePic';
+					}
 					uni.uploadFile({
-						url: this.uploadUrl + '/admin/upload', //仅为示例，非真实的接口地址
+						url: url,
 						filePath: res.tempFilePaths[0],
-						name: 'file',
+						name: 'files',
 						formData: {},
 						success: res => {
 							uni.hideLoading();
 							let resoult = JSON.parse(res.data);
 							console.log('上传图片', resoult);
-							if (resoult.status === 1) {
-								this.imgSrcList.push(resoult.url);
+							if (resoult.code === 200) {
+								this.imgSrcList.push(...resoult.data);
 								console.log(this.imgSrcList);
 							} else {
 								this.showToast(resoult.info);
@@ -149,14 +273,24 @@ export default {
 			this.imgList.splice(e.currentTarget.dataset.index, 1);
 			this.imgSrcList.splice(e.currentTarget.dataset.index, 1);
 		},
+		openChooseAddress() {
+			this.cityPickerValueDefault = [0, 0, 1];
+			this.$refs.simpleAddress.open();
+		},
 		bindPickerChange(e, type) {
-			console.log(e.detail.value, type);
+			console.log(e, type);
 			switch (type) {
 				case 1:
 					this.decorationType = e.detail.value;
 					break;
 				case 2:
 					this.useType = e.detail.value;
+					break;
+				case 3:
+					this.formData.year = e.detail.value;
+					break;
+				case 4:
+					this.formData.area = e.label;
 					break;
 			}
 		}

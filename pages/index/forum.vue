@@ -70,14 +70,14 @@ export default {
 			logo: '/static/indexmenu15.png',
 			postList: [
 				{
-					userHeadPic: 'https://i.picsum.photos/id/740/750/350.jpg',
+					userHeadPic: 'https://housecollection.oss-cn-beijing.aliyuncs.com/loupan-picture/indexPic/ca6cb639b1ffb80619533d2ff1877b4.png',
 					userName: '华佳燕',
 					postType1: true,
 					postType2: true,
 					postTypeText: '资讯',
 					title: '绿地香港去年销售业绩未达目标未达目标未达目标',
 					desc: '3.29,绿地香港矩形2018年业绩发布会。金源绿地香港在过去5年复合增长率高达复合增长率高达复合增长率高达',
-					contentPic: 'https://i.picsum.photos/id/740/750/350.jpg',
+					contentPic: 'https://housecollection.oss-cn-beijing.aliyuncs.com/loupan-picture/indexPic/ca6cb639b1ffb80619533d2ff1877b4.png',
 					date: '2020-04-08',
 					num: '999',
 					likeList: [{ name: '1', pic: 'https://i.picsum.photos/id/740/750/350.jpg' }, { name: '1', pic: 'https://i.picsum.photos/id/740/750/350.jpg' }],

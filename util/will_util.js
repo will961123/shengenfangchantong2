@@ -28,11 +28,11 @@ Vue.prototype.checkLogin = function() {
 }
 Vue.prototype.getUserId = function() {
 	// #ifdef H5
-	return uni.getStorageSync('openId') || ''
-	// return 'ocNWt4hn2b0sDC-K4LSOvYVUDikM'  
+	// return uni.getStorageSync('userId') || ''
+	return '1262186392264990722'  
 	// #endif
 	// #ifndef H5
-	return uni.getStorageSync('openId') || ''
+	return uni.getStorageSync('userId') || ''
 	// #endif
 
 }

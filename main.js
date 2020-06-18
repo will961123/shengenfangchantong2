@@ -4,10 +4,12 @@ import "./etc/etc.js"
 import "./util/will_util.js"
 
 import sunUiStepper from './components/sunui-stepper/sunui-stepper.vue'
+import sunUiAddress from './components/simple-address/simple-address.nvue' 
 import willTip from './components/will_tip/will_tip.vue';
 import willNodata from '@/components/will_nodata/will_nodata.vue';
 import willMc from '@/components/will_mc/will_mc.vue';
 Vue.component('sunui-stepper', sunUiStepper);
+Vue.component('sunui-address', sunUiAddress);
 Vue.component('will-tip', willTip);
 Vue.component('will-nodata', willNodata);
 Vue.component('will-mc', willMc);

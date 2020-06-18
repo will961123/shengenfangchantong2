@@ -12,7 +12,7 @@ Vue.prototype.uploadUrl = '/h5upload'
 // #endif
 // #ifndef H5
 Vue.prototype.apiUrl = 'http://192.168.0.111:8075/mobile'
-Vue.prototype.uploadUrl = ''
+Vue.prototype.uploadUrl = 'http://192.168.0.111:8075/mobile'
 // #endif
 
 

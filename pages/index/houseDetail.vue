@@ -8,7 +8,7 @@
 				</swiper-item>
 			</swiper>
 			<view style="padding:0 30rpx">
-				<view class="content">
+				<view v-if="title === '买新房'" class="content">
 					<view class="houseInfo bra6">
 						<view class="state">
 							<text class="bra6 red">{{ houseInfo.saleStatus == '1' ? '在售' : '待售' }}</text>
@@ -22,7 +22,7 @@
 							<view class="projectNameRemark grey">备案名：{{ houseInfo.louPanName }}</view>
 							<view class="buyPeoples"></view>
 							<view class="price">约{{ houseInfo.price }}元/m²起</view>
-							<view @click="cellPhone" class="tel  " style="font-size:26rpx">
+							<view @click="cellPhone" :data-phone="houseInfo.telephone" class="tel  " style="font-size:26rpx">
 								<text class="grey">电话：</text>
 								<text class="tel1">{{ houseInfo.telephone }}</text>
 								<text style="float: right;font-size: 34rpx;" class="cuIcon cuIcon-phone text-red "></text>
@@ -39,8 +39,73 @@
 					<!-- 项目展示图片 -->
 					<!-- <view class="videoEnter bra6 mb30"><image mode="aspectFill" :src="houseInfo.loupanAdPic"></image></view> -->
 				</view>
+
+				<view v-else>
+					<view class="content">
+						<view class="houseInfo bra6">
+							<view class="state">
+								<text class="bra6 red">在售</text>
+								<text class="bra6">{{ houseInfo.label }}</text>
+							</view>
+							<view style="padding:0  30rpx 30rpx 30rpx; background-color: #fdeaec;">
+								<view class="projectName">
+									<view>{{ houseInfo.housingEstate }}</view>
+									<!-- <text class="morebox" @click="goToMoreInfo">更多详情</text> -->
+								</view>
+								<!-- <view class="projectNameRemark grey">备案名：{{ houseInfo.louPanName }}</view> -->
+								<view class="buyPeoples"></view>
+								<view class="price">{{ houseInfo.price }}万元/套</view>
+								<view @click="cellPhone" :data-phone="houseInfo.phone" class="tel  " style="font-size:26rpx">
+									<text class="grey">电话：</text>
+									<text class="tel1">{{ houseInfo.phone }}</text>
+									<text style="float: right;font-size: 34rpx;" class="cuIcon cuIcon-phone text-red "></text>
+								</view>
+								<view style="display:flex;align-items:center;margin-top:8px;" class="address elli justify-between" @click="map">
+									<view style="display:flex;align-items:center;">
+										<view class="grey" style="font-size:26rpx">地址：</view>
+										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.area }}</view>
+									</view>
+									<text style="float: right;font-size: 34rpx;" class=" text-red cuIcon cuIcon-locationfill"></text>
+								</view>
+							</view>
+						</view>
+						<view class="houseInfo houseInfo2 bra6">
+							<view style="padding:10px  30rpx 10rpx 30rpx; background-color: #fdeaec;">
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">装修类型：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.decorationType }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">用途：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.useType }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">户型：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.apartmentLayout }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">年代：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.year.split(' ')[0] }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">面积：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.mianji }}m²</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">楼层：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.floor }}</view>
+								</view>
+								<view style="display:flex; line-height: 26px;">
+									<view class="grey" style="font-size:26rpx;">描述：</view>
+									<view class="tel1 " style="font-size:26rpx;margin-top:0;flex:1">{{ houseInfo.houseDescribe }}</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+
 				<!-- 户型区域 -->
-				<view class="hx_detailBox" style="margin-bottom: 30rpx;border-radius: 6rpx;">
+				<view v-if="title === '买新房'" class="hx_detailBox" style="margin-bottom: 30rpx;border-radius: 6rpx;">
 					<view class="hx_box">
 						<view class="hx_title">户型推荐</view>
 						<view class="hx_more" @click="gotoHouseTypeList">查看更多 ></view>
@@ -62,7 +127,7 @@
 					</swiper>
 				</view>
 				<!-- 新闻资讯 -->
-				<view class="news bra6 mb30">
+				<view v-if="title === '买新房'" class="news bra6 mb30">
 					<view class="hx_box"><view class="hx_title">企业新闻</view></view>
 					<view>
 						<view v-for="(item, index) in newsList" :key="index" class="li" @click="goToNewsInfo(item.id)">
@@ -84,7 +149,7 @@
 						<image src="/static/house_address-min.jpg" mode="widthFix"></image>
 						<view class="ad_address  drift" @click="map">
 							<view class="name elli flex align-center justify-around">
-								<text class="text-bold">{{ houseInfo.louPanName }}</text>
+								<text class="text-bold">{{ houseInfo.louPanName || houseInfo.housingEstate }}</text>
 								<text style="font-size: 34rpx;" class="cuIcon text-red cuIcon-locationfill"></text>
 							</view>
 						</view>
@@ -113,6 +178,7 @@ export default {
 	data() {
 		return {
 			id: '',
+			title: '买新房',
 			peitao: [
 				{ pic: '/static/houseInfoPT1.png', name: '交通' },
 				{ pic: '/static/houseInfoPT2.png', name: '学校' },
@@ -131,19 +197,20 @@ export default {
 		};
 	},
 	onLoad(options) {
-		if (options.id) {
+		if (options.id && options.title) {
 			this.id = options.id;
+			this.title = options.title;
 			this.getDetail();
-			this.getNewsList();
+			this.title === '买新房' && this.getNewsList();
 		}
 	},
 	methods: {
-		gotoGouseDetailImg(){
+		gotoGouseDetailImg() {
 			uni.navigateTo({
 				url: '/pages/index/houseDetailImg?id=' + this.id
 			});
 		},
-		goToMoreInfo(){
+		goToMoreInfo() {
 			uni.navigateTo({
 				url: '/pages/index/houseMoreInfo?id=' + this.id
 			});
@@ -174,16 +241,29 @@ export default {
 		},
 		getDetail() {
 			this.showLoading();
-			this.request({
-				url: '/LouPanInfo/detail',
-				data: {
+			let url = '/rentSaleHouse/detail';
+			let formData = {
+				id: this.id
+			};
+			if (this.title === '买新房') {
+				url = '/LouPanInfo/detail';
+				formData = {
 					louPanId: this.id
-				},
+				};
+			}
+			this.request({
+				url: url,
+				data: formData,
 				success: res => {
 					uni.hideLoading();
 					console.log('楼盘详情', res);
-					if (res.data.code === 200) {
+					if (this.title === '买新房' && res.data.code === 200) {
 						res.data.data.lightSpot = res.data.data.lightSpot.split(',');
+						this.houseInfo = res.data.data;
+						this.getAround(this.peitao[0].name);
+					} else {
+						res.data.data.picUrlList = res.data.data.picUrls;
+						res.data.data.address = res.data.data.area + ' ' + res.data.data.housingEstate;
 						this.houseInfo = res.data.data;
 						this.getAround(this.peitao[0].name);
 					}
@@ -280,8 +360,9 @@ export default {
 			this.peitaoIdx = idx;
 			this.getAround(this.peitao[idx].name);
 		},
-		cellPhone() {
-			if (!this.houseInfo.telephone) {
+		cellPhone(e) {
+			let phoneNumber = e.currentTarget.dataset.phone;
+			if (!phoneNumber) {
 				uni.showModal({
 					title: '提示',
 					content: '暂未设置联系方式',
@@ -290,7 +371,7 @@ export default {
 				return false;
 			}
 			uni.makePhoneCall({
-				phoneNumber: '' + this.houseInfo.telephone
+				phoneNumber: '' + phoneNumber
 			});
 		}
 	}
@@ -395,6 +476,13 @@ page {
 	border-radius: 8rpx;
 	margin-bottom: 16px;
 }
+.houseInfo2 {
+	margin-top: 20px;
+	.addressov1 {
+		width: auto !important;
+		flex: 1;
+	}
+}
 
 .houseInfo .grey {
 	color: grey;
@@ -455,7 +543,7 @@ page {
 
 .houseInfo .addressov1 {
 	display: inline-block;
-	width: 75%;
+	width: 95%;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;

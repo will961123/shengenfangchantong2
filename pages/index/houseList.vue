@@ -7,20 +7,21 @@
 			</view>
 			<text>搜索</text>
 		</view>
-		<view v-for="(item, index) in list" :key="index" class="item bg-white flex">
+		<view @click="gotoHouseDetail(item.louPanId||item.id)" v-for="(item, index) in list" :key="index" class="item bg-white flex">
 			<image :src="item.indexPic" mode="scaleToFill"></image>
 			<view class="rightBox flex flex-direction justify-between">
 				<view class="name">{{ item.louPanName }}</view>
 				<view class="time flex align-center justify-between">
 					<view>{{ title === '找租房' ? item.city : item.createTime }}</view>
-					<view class="money text-red">{{ item.price }}元/平</view>
+					<view v-if="title === '买新房'" class="money text-red">{{ item.price }}元/平</view>
+					<view v-else class="money text-red">{{ item.price }}万元</view>
 				</view>
 				<view class="textov1">
 					<text>{{ item.houseType }}</text>
 					<text class="size">{{ item.houseArea }}</text>
 				</view>
 				<view class="type">
-					<view class="textov1">{{ item.lightSpot }}{{ item.lightSpot }}</view> 
+					<view class="textov1">{{ item.lightSpot }}</view>
 					<!-- <text v-for="(type, index) in item.type" :key="index">#{{ type }}</text> -->
 				</view>
 			</view>
@@ -47,13 +48,84 @@ export default {
 			case '买新房':
 				this.getNewHouseList();
 				break;
+			case '找租房':
+				this.getAllRentHouse();
+				break;
+			case '买二手房':
+				this.getAllSecondHandHouse();
+				break;
 		}
 	},
 	onReachBottom() {
-		this.getNewHouseList();
+		switch (this.title) {
+			case '买新房':
+				this.getNewHouseList();
+				break;
+			case '找租房':
+				this.getAllRentHouse();
+				break;
+			case '买二手房':
+				this.getAllSecondHandHouse();
+				break;
+		}
 	},
 	methods: {
+		getAllSecondHandHouse() {
+			this.showLoading();
+			this.request({
+				url: '/rentSaleHouse/getAllSecondHandHouse',
+				data: {
+					page: this.houseListPage,
+					limit: 10
+				},
+				success: res => {
+					uni.hideLoading();
+					console.log('二手房', res);
+					if (res.data.code === 0) {
+						this.houseListPage++;
+						res.data.data = res.data.data.map(i => { 
+							i.createTime = i.year ? i.year.split('-')[0] : '年份未知';
+							i.indexPic = i.indexPic ? '' : i.picUrls ? (i.picUrls[0] ? i.picUrls[0].picUrl : '') : '';
+							i.louPanName = i.houseName;
+							i.houseType = i.apartmentLayout;
+							i.houseArea = i.mianji + 'm²';
+							i.lightSpot = i.label;
+							return i;
+						});
+						this.list.push(...res.data.data);
+					}
+				}
+			});
+		},
+		getAllRentHouse() {
+			this.showLoading();
+			this.request({
+				url: '/rentSaleHouse/getAllRentHouse',
+				data: {
+					page: this.houseListPage,
+					limit: 10
+				},
+				success: res => {
+					uni.hideLoading();
+					console.log('租房', res);
+					if (res.data.code === 0) {
+						this.houseListPage++;
+						res.data.data = res.data.data.map(i => {
+							i.createTime = i.year ? i.year.split('-')[0] : '年份未知';
+							i.indexPic = i.indexPic ? '' : i.picUrls ? (i.picUrls[0] ? i.picUrls[0].picUrl : '') : '';
+							i.louPanName = i.houseName;
+							i.houseType = i.apartmentLayout;
+							i.houseArea = i.mianji + 'm²';
+							i.lightSpot = i.label;
+							return i;
+						});
+						this.list.push(...res.data.data);
+					}
+				}
+			});
+		},
 		getNewHouseList() {
+			this.showLoading();
 			this.request({
 				url: '/LouPanInfo/getAllLouPan',
 				data: {
@@ -61,6 +133,7 @@ export default {
 					limit: 10
 				},
 				success: res => {
+					uni.hideLoading();
 					console.log('买新房', res);
 					if (res.data.code === 0) {
 						this.houseListPage++;
@@ -71,6 +144,11 @@ export default {
 						this.list.push(...res.data.data);
 					}
 				}
+			});
+		},
+		gotoHouseDetail(id) {
+			uni.navigateTo({
+				url: '/pages/index/houseDetail?title=' + this.title + '&id=' + id
 			});
 		}
 	}
@@ -116,7 +194,7 @@ export default {
 		}
 		.rightBox {
 			font-size: 30rpx;
-			color: #999; 
+			color: #999;
 			width: calc(100% - 320rpx);
 			.name,
 			.time {
