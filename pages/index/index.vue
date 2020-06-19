@@ -4,7 +4,7 @@
 			<swiper-item v-for="(item, index) in bannerList" :key="index"><image style="width: 100%;" :src="item.picUrl" mode="scaleToFill"></image></swiper-item>
 		</swiper>
 
-		<swiper class="menuList bg-white square-dot will-dot radius" :autoplay="false">
+		<swiper class="menuList bg-white   radius" :autoplay="false">
 			<swiper-item v-for="(page, index) in menuList" :key="index" class="radius flex flex-wrap  ">
 				<view
 					@click="navgater"

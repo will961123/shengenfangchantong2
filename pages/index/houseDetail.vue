@@ -40,7 +40,7 @@
 					<!-- <view class="videoEnter bra6 mb30"><image mode="aspectFill" :src="houseInfo.loupanAdPic"></image></view> -->
 				</view>
 
-				<view v-else>
+				<view v-else-if="title === '买二手房' || title === '找租房'">
 					<view class="content">
 						<view class="houseInfo bra6">
 							<view class="state">
@@ -85,7 +85,7 @@
 								</view>
 								<view style="display:flex;align-items:center;line-height: 26px;">
 									<view class="grey" style="font-size:26rpx">年代：</view>
-									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.year.split(' ')[0] }}</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.year }}</view>
 								</view>
 								<view style="display:flex;align-items:center;line-height: 26px;">
 									<view class="grey" style="font-size:26rpx">面积：</view>
@@ -99,6 +99,99 @@
 									<view class="grey" style="font-size:26rpx;">描述：</view>
 									<view class="tel1 " style="font-size:26rpx;margin-top:0;flex:1">{{ houseInfo.houseDescribe }}</view>
 								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+
+				<view v-else>
+					<view class="content">
+						<view class="houseInfo bra6">
+							<view class="state">
+								<text class="bra6 red">{{ houseInfo.saleType ? '出售' : '出租' }}</text>
+								<text class="bra6">{{ houseInfo.jingyingStatus }}</text>
+							</view>
+							<view style="padding:0  30rpx 30rpx 30rpx; background-color: #fdeaec;">
+								<view class="projectName">
+									<view>{{ houseInfo.louPanName }}</view>
+								</view>
+								<view class="buyPeoples"></view>
+								<view class="price">
+									{{ houseInfo.price }}万元/套
+									<text v-if="houseInfo.saleType.saleType === 0">/月</text>
+								</view>
+								<view @click="cellPhone" :data-phone="houseInfo.phone" class="tel  " style="font-size:26rpx">
+									<text class="grey">电话：</text>
+									<text class="tel1">{{ houseInfo.phone }}</text>
+									<text style="float: right;font-size: 34rpx;" class="cuIcon cuIcon-phone text-red "></text>
+								</view>
+								<view style="display:flex;align-items:center;margin-top:8px;" class="address elli justify-between" @click="map">
+									<view style="display:flex;align-items:center; ;width: 80%;">
+										<view class="grey" style="font-size:26rpx">地址：</view>
+										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.address }}</view>
+									</view>
+									<text style="float: right;font-size: 34rpx;" class=" text-red cuIcon cuIcon-locationfill"></text>
+								</view>
+							</view>
+						</view>
+						<view class="houseInfo houseInfo2 bra6">
+							<view style="padding:10px  30rpx 10rpx 30rpx; background-color: #fdeaec;">
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">所在区域：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.area }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">详细地址：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.address }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">商铺名：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.shopName }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">起始楼层：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.floor }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">商铺类型：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.shopType }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">建筑面积：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.mianji }}m²</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">是否临街：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.isLinjie ? '是' : '否' }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">面宽：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.miankuan }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">层高：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.cenggao }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">进深：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.jinshen }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">经营状态：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.jingyingStatus }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">经营行业：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.jingyingHangye }}</view>
+								</view>
+								<view style="display:flex;align-items:center;line-height: 26px;">
+									<view class="grey" style="font-size:26rpx">物业费：</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.wuyefei }}</view>
+								</view>
+								<!-- <view style="display:flex; line-height: 26px;">
+									<view class="grey" style="font-size:26rpx;">描述：</view>
+									<view class="tel1 " style="font-size:26rpx;margin-top:0;flex:1">{{ houseInfo.houseDescribe }}</view>
+								</view> -->
 							</view>
 						</view>
 					</view>
@@ -241,14 +334,26 @@ export default {
 		},
 		getDetail() {
 			this.showLoading();
-			let url = '/rentSaleHouse/detail';
+			// 买新房
+			let url = '/LouPanInfo/detail';
 			let formData = {
-				id: this.id
+				louPanId: this.id
 			};
 			if (this.title === '买新房') {
 				url = '/LouPanInfo/detail';
 				formData = {
 					louPanId: this.id
+				};
+			} else if (this.title === '买二手房' || this.title === '找租房') {
+				url = '/rentSaleHouse/detail';
+				formData = {
+					id: this.id
+				};
+			} else {
+				// 商铺
+				url = '/rentSaleShop/detail';
+				formData = {
+					id: this.id
 				};
 			}
 			this.request({
@@ -258,12 +363,24 @@ export default {
 					uni.hideLoading();
 					console.log('楼盘详情', res);
 					if (this.title === '买新房' && res.data.code === 200) {
-						res.data.data.lightSpot = res.data.data.lightSpot.split(',');
+						res.data.data.lightSpot = res.data.data.lightSpot ? res.data.data.lightSpot.split(',') : [];
 						this.houseInfo = res.data.data;
 						this.getAround(this.peitao[0].name);
-					} else {
+					} else if ((this.title === '买二手房' || this.title === '找租房') && res.data.code === 200) {
 						res.data.data.picUrlList = res.data.data.picUrls;
-						res.data.data.address = res.data.data.area + ' ' + res.data.data.housingEstate;
+						res.data.data.address = res.data.data.area + res.data.data.housingEstate;
+						res.data.data.year = res.data.data.year ? res.data.data.year.split(' ')[0] : '年份未知';
+						this.houseInfo = res.data.data;
+						this.getAround(this.peitao[0].name);
+					} else if (res.data.code === 200) {
+						res.data.data.picUrlList = res.data.data.picUrlList.map(i => {
+							i.picUrl = i.url;
+							return i;
+						});
+						res.data.data.address = res.data.data.area + res.data.data.address + res.data.data.shopName;
+						res.data.data.year = res.data.data.year ? res.data.data.year.split(' ')[0] : '年份未知';
+						res.data.data.louPanName = res.data.data.shopName;
+						res.data.data.price = res.data.data.money;
 						this.houseInfo = res.data.data;
 						this.getAround(this.peitao[0].name);
 					}
@@ -278,6 +395,7 @@ export default {
 		map() {
 			if (!this.location.lng) {
 				this.qqmap.geocoder({
+					// address: '河南省郑州市紫荆山公园',
 					address: this.houseInfo.address,
 					type: 'gcj02',
 					success: res => {
@@ -311,7 +429,7 @@ export default {
 		getAround(keyword) {
 			if (!this.location.lng) {
 				this.qqmap.geocoder({
-					// address: '河南省漯河市郾城区银都大酒店',
+					// address: '河南省郑州市紫荆山公园',
 					address: this.houseInfo.address,
 					type: 'gcj02',
 					success: res => {

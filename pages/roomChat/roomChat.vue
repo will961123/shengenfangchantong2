@@ -1,10 +1,10 @@
 <template>
 	<view class="roomChatView">
-		<view v-for="(item, index) in postList" :key="index" class="postList flex bg-white">
-			<view class="headBox"><image :src="item.userHeadPic" mode="aspectFill"></image></view>
+		<view @click="gotoPostDetail" :data-id="item.microcosmId" v-for="(item, index) in postList" :key="index" class="postList flex bg-white">
+			<view class="headBox"><image :src="item.userInfo.avatar_url" mode="aspectFill"></image></view>
 			<view style="width: calc(100% - 100rpx);">
 				<view class="nameBox flex align-center">
-					<text>{{ item.userName }}</text>
+					<text>{{ item.userInfo.nick_name }}</text>
 					<!-- <view v-show="item.postType1" class="type bg-blue">置顶</view>
 					<view v-show="item.postType2" class="type bg-orange">精品</view> -->
 				</view>
@@ -12,12 +12,15 @@
 				<!-- view class="title textov1 "><text class="text-blue">#{{item.postTypeText}}#</text>{{item.title}}</view> -->
 				<view class="desc textov2">{{ item.content }}</view>
 				<!-- <view class="contentPic"><image :src="item.contentPic" mode="widthFix"></image></view> -->
-				<view v-if="item.picUrlList.length>0" class="cu-form-group" style="padding: 0;">
+				<view v-if="item.picUrlList.length > 0" class="cu-form-group" style="padding: 0;">
 					<view class="grid col-3 grid-square flex-sub">
-						<view class="bg-img" v-for="(img, idx) in item.picUrlList" :key="idx" @tap="ViewImage" :data-url="item.url">
+						<view class="bg-img" v-for="(img, idx) in item.picUrlList" :key="idx" :data-url="item.url">
 							<image :src="img.url" mode="aspectFill"></image>
 						</view>
 					</view>
+				</view>
+				<view v-if="item.address" class="addressBox text-gray">
+					{{ item.address }}
 				</view>
 				<view class="dateBox flex justify-between align-center">
 					<view class="flex align-center">
@@ -27,17 +30,18 @@
 					</view>
 					<text class="cuIcon cuIcon-commentfill text-blue"></text>
 				</view>
+				
 				<view class="commentBox ">
 					<view class="likeBox flex align-center">
 						<text class="cuIcon cuIcon-like"></text>
 						<image v-if="index < 6" v-for="(like, index) in item.likeList" :key="index" :src="like.pic" mode="aspectFill"></image>
 						等{{ 1 }}人点赞
 					</view>
-					<view v-for="(commit, index) in item.commitList" :key="index" class="commitItem">
-						<text>{{ commit.name }}:</text>
+					<view v-if="index < 5" v-for="(commit, index) in item.first" :key="index" class="commitItem">
+						<text class="text-blue">{{ commit.nickName }}:</text>
 						<text>{{ commit.content }}</text>
 					</view>
-					<view class="moreComment text-blue">查看全部{{ 2 }}条评论</view>
+					<view v-if="item.first.length > 5" class="moreComment text-blue">查看全部{{ item.first.length }}条评论</view>
 				</view>
 			</view>
 		</view>
@@ -59,6 +63,12 @@ export default {
 		// this.getPostList();
 	},
 	methods: {
+		gotoPostDetail(e) {
+			let id = e.currentTarget.dataset.id;
+			uni.navigateTo({
+				url: '/pages/roomChat/roomChatDetail?id=' + id
+			});
+		},
 		getPostList() {
 			this.showLoading();
 			this.request({
@@ -129,10 +139,14 @@ export default {
 				margin-top: 6rpx;
 			}
 		}
+		.addressBox{
+			font-size: 24rpx;
+			margin-top: 30rpx;
+		}
 		.dateBox {
 			font-size: 22rpx;
 			color: #999;
-			margin: 30rpx 0 20rpx 0;
+			margin: 10rpx 0 20rpx 0;
 			image {
 				width: 30rpx;
 				margin: 0 8rpx 0 18rpx;

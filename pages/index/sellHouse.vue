@@ -1,84 +1,205 @@
 <template>
 	<view class="sellHouseView">
-		<view class="section bg-white">
-			<view class="item flex align-center">
-				<view class="tit">所在区域</view>
-				<view class="iptbox flex align-center"><input :disabled="true" @click="openChooseAddress" type="text" v-model="formData.area" placeholder="请输入所在区域" /></view>
+		<view v-if="title === '我要卖房' || title === '我要出租'">
+			<view class="section bg-white">
+				<view class="item flex align-center">
+					<view class="tit">所在区域</view>
+					<view class="iptbox flex align-center">
+						<input :disabled="true" @click="openChooseAddress" type="text" v-model="formData.area" placeholder="请输入所在区域" />
+					</view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">所属小区</view>
+					<view class="iptbox flex align-center"><input type="text" v-model="formData.housingEstate" placeholder="请输入所属小区" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">装修类型</view>
+					<picker @change="bindPickerChange($event, 1)" :range="decorationTypeList">
+						<input type="text" :disabled="true" :value="decorationType > -1 ? decorationTypeList[decorationType] : ''" placeholder="请选择装修类型" />
+					</picker>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">用途</view>
+					<picker @change="bindPickerChange($event, 2)" :range="useTypeList">
+						<input type="text" :disabled="true" :value="useType > -1 ? useTypeList[useType] : ''" placeholder="请选择用途" />
+					</picker>
+				</view>
 			</view>
-			<view class="item flex align-center">
-				<view class="tit">所属小区</view>
-				<view class="iptbox flex align-center"><input type="text" v-model="formData.housingEstate" placeholder="请输入所属小区" /></view>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">装修类型</view>
-				<picker @change="bindPickerChange($event, 1)" :range="decorationTypeList">
-					<input type="text" :disabled="true" :value="decorationType > -1 ? decorationTypeList[decorationType] : ''" placeholder="请选择装修类型" />
-				</picker>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">用途</view>
-				<picker @change="bindPickerChange($event, 2)" :range="useTypeList">
-					<input type="text" :disabled="true" :value="useType > -1 ? useTypeList[useType] : ''" placeholder="请选择用途" />
-				</picker>
-			</view>
-		</view>
 
-		<view class="section bg-white">
-			<view class="item flex align-center">
-				<view class="tit">房屋名称</view>
-				<view class="iptbox flex align-center"><input type="text" v-model="formData.houseName" placeholder="请输入房屋名称" /></view>
+			<view class="section bg-white">
+				<view class="item flex align-center">
+					<view class="tit">房屋名称</view>
+					<view class="iptbox flex align-center"><input type="text" v-model="formData.houseName" placeholder="请输入房屋名称" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">{{ title === '我要出租' ? '租金（单位：元）' : '售价（单位：万元）' }}</view>
+					<view class="iptbox flex align-center"><input type="digit" v-model="formData.price" :placeholder="title === '我要出租' ? '请输入租金' : '请输入售价'" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">户型</view>
+					<view class="iptbox flex align-center"><input type="text" v-model="formData.apartmentLayout" placeholder="请输入户型" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">年代</view>
+					<picker mode="date" @change="bindPickerChange($event, 3)"><input type="text" :disabled="true" v-model="formData.year" placeholder="请输入年代" /></picker>
+					<!-- <view class="iptbox flex align-center"><input type="text" v-model="formData.year" placeholder="请输入年代" /></view> -->
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">面积（单位：m²）</view>
+					<view class="iptbox flex align-center"><input type="digit" v-model="formData.mianji" placeholder="请输入面积" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">楼层</view>
+					<view class="iptbox flex align-center"><input type="number" v-model="formData.floor" placeholder="请输入楼层" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">手机号</view>
+					<view class="iptbox flex align-center"><input type="number" v-model="formData.phone" placeholder="请输入手机号" /></view>
+				</view>
+				<view class="item flex align-center">
+					<view class="tit">标签</view>
+					<view class="iptbox flex align-center"><input type="text" v-model="formData.label" placeholder="请输入标签" /></view>
+				</view>
+				<view class="item item2">
+					<view class="tit">房屋描述</view>
+					<textarea v-model="formData.houseDescribe" placeholder="请输入房屋描述" />
+				</view>
 			</view>
-			<view class="item flex align-center">
-				<view class="tit">{{ title === '我要出租' ? '租金（单位：元）' : '售价（单位：万元）' }}</view>
-				<view class="iptbox flex align-center"><input type="digit" v-model="formData.price" :placeholder="title === '我要出租' ? '请输入租金' : '请输入售价'" /></view>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">户型</view>
-				<view class="iptbox flex align-center"><input type="text" v-model="formData.apartmentLayout" placeholder="请输入户型" /></view>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">年代</view>
-				<picker mode="date" @change="bindPickerChange($event, 3)"><input type="text" :disabled="true" v-model="formData.year" placeholder="请输入年代" /></picker>
-				<!-- <view class="iptbox flex align-center"><input type="text" v-model="formData.year" placeholder="请输入年代" /></view> -->
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">面积（单位：m²）</view>
-				<view class="iptbox flex align-center"><input type="digit" v-model="formData.mianji" placeholder="请输入面积" /></view>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">楼层</view>
-				<view class="iptbox flex align-center"><input type="number" v-model="formData.floor" placeholder="请输入楼层" /></view>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">手机号</view>
-				<view class="iptbox flex align-center"><input type="number" v-model="formData.phone" placeholder="请输入手机号" /></view>
-			</view>
-			<view class="item flex align-center">
-				<view class="tit">标签</view>
-				<view class="iptbox flex align-center"><input type="text" v-model="formData.label" placeholder="请输入标签" /></view>
-			</view>
-			<view class="item item2">
-				<view class="tit">房屋描述</view>
-				<textarea v-model="formData.houseDescribe" placeholder="请输入房屋描述" />
-			</view>
-		</view>
 
-		<view class="section bg-white">
-			<view class="item item2"><view class="tit">房屋封面</view></view>
-			<view class="commitbox  ">
-				<view class="cu-form-group" style="padding: 0;">
-					<view class="grid col-4 grid-square flex-sub">
-						<view class="solids" @tap="ChooseImage" v-if="imgList.length < 4"><text class="cuIcon-cameraadd"></text></view>
-						<view class="bg-img" v-for="(item, index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
-							<image :src="imgList[index]" mode="aspectFill"></image>
-							<view class="cu-tag bg-red" @click.stop="DelImg" :data-index="index"><text class="cuIcon-close"></text></view>
+			<view class="section bg-white">
+				<view class="item item2"><view class="tit">房屋照片</view></view>
+				<view class="commitbox  ">
+					<view class="cu-form-group" style="padding: 0;">
+						<view class="grid col-4 grid-square flex-sub">
+							<view class="solids" @tap="ChooseImage" v-if="imgList.length < 4"><text class="cuIcon-cameraadd"></text></view>
+							<view class="bg-img" v-for="(item, index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+								<image :src="imgList[index]" mode="aspectFill"></image>
+								<view class="cu-tag bg-red" @click.stop="DelImg" :data-index="index"><text class="cuIcon-close"></text></view>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
-		<button @click="saveHoustInfo" class="cu-btn btn bg-green">提交</button>
+		<!-- 商铺 -->
+		<view v-else>
+			<view v-if="formPage === 1">
+				<view class="section bg-white">
+					<view class="item item2"><view class="tit">商铺照片</view></view>
+					<view class="commitbox  ">
+						<view class="cu-form-group" style="padding: 0;">
+							<view class="grid col-4 grid-square flex-sub">
+								<view class="solids" @tap="ChooseImage" v-if="imgList.length < 4"><text class="cuIcon-cameraadd"></text></view>
+								<view class="bg-img" v-for="(item, index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+									<image :src="imgList[index]" mode="aspectFill"></image>
+									<view class="cu-tag bg-red" @click.stop="DelImg" :data-index="index"><text class="cuIcon-close"></text></view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="section bg-white">
+					<view class="item flex align-center">
+						<view class="tit">所在区域</view>
+						<view class="iptbox flex align-center">
+							<input :disabled="true" @click="openChooseAddress" type="text" v-model="formData.area" placeholder="请输入所在区域" />
+						</view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">详细地址</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.address" placeholder="请输入详细地址" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">商铺名</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.shopName" placeholder="请输入商铺名" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">开始楼层</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.floorStart" placeholder="请输入开始楼层" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">结束楼层</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.floorEnd" placeholder="请输入结束楼层" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">商铺类型</view>
+						<picker @change="bindPickerChange($event, 5)" :range="shopTypeList">
+							<input type="text" :disabled="true" :value="formData.shopType > -1 ? shopTypeList[formData.shopType] : ''" placeholder="请选择商铺类型" />
+						</picker>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">建筑面积(米)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.mianji" placeholder="请输入建筑面积" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">是否临街</view>
+						<picker @change="bindPickerChange($event, 6)" :range="isLinjieList">
+							<input type="text" :disabled="true" :value="formData.isLinjie > -1 ? isLinjieList[formData.isLinjie] : ''" placeholder="请选择是否临街" />
+						</picker>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">面宽(米)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.miankuan" placeholder="请输入面宽" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">层高(米)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.cenggao" placeholder="请输入层高" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">进深(米)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.jinshen" placeholder="请输入进深" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">经营状态</view>
+						<picker @change="bindPickerChange($event, 7)" :range="jingyingStatusList">
+							<input
+								type="text"
+								:disabled="true"
+								:value="formData.jingyingStatus > -1 ? jingyingStatusList[formData.jingyingStatus] : ''"
+								placeholder="请选择经营状态"
+							/>
+						</picker>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">经营行业</view>
+						<picker @change="bindPickerChange($event, 8)" :range="jingyingHangyeList">
+							<input
+								type="text"
+								:disabled="true"
+								:value="formData.jingyingHangye > -1 ? jingyingHangyeList[formData.jingyingHangye] : ''"
+								placeholder="请选择经营行业"
+							/>
+						</picker>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">出租或出售</view>
+						<picker @change="bindPickerChange($event, 9)" :range="saveTypeList">
+							<input type="text" :disabled="true" :value="saveTypeList[formData.saveType]" placeholder="请选择出租或出售" />
+						</picker>
+					</view>
+					<view v-if="formData.saveType === 0" class="item flex align-center">
+						<view class="tit">租金(万元/月)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.money" placeholder="请输入租金" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">物业费(元/月)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.wuyefei" placeholder="请输入物业费" /></view>
+					</view>
+					<view v-if="formData.saveType === 1" class="item flex align-center">
+						<view class="tit">售价(万元/套)</view>
+						<view class="iptbox flex align-center"><input type="text" v-model="formData.money" placeholder="请输入售价" /></view>
+					</view>
+					<view class="item flex align-center">
+						<view class="tit">手机号</view>
+						<view class="iptbox flex align-center"><input type="number" v-model="formData.phone" placeholder="请输入手机号" /></view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<button v-if="title === '我要卖房' || title === '我要出租'" @click="saveHoustInfo" class="cu-btn btn bg-green">提交</button>
+		<button v-else @click="saveShopInfo" class="cu-btn btn bg-green">提交</button>
 
 		<sunui-address ref="simpleAddress" :pickerValueDefault="cityPickerValueDefault" @onConfirm="bindPickerChange($event, 4)" themeColor="#007AFF"></sunui-address>
 	</view>
@@ -93,10 +214,31 @@ export default {
 			decorationType: -1,
 			useTypeList: ['住宅', '商铺'],
 			useType: -1,
+			shopTypeList: ['商业街店铺', '写字楼配套', '社区底商', '临街门面', '档口摊位', '购物百货中心', '其他'], //商铺类型
+			isLinjieList: ['是', '否'], // 是否临街
+			jingyingStatusList: ['经营中', '空置中'], //经营状态
+			saveTypeList: ['出租', '出售'],
+			jingyingHangyeList: [
+				'餐饮美食',
+				'美容美发',
+				'服饰鞋包',
+				'休闲娱乐',
+				'百货超市',
+				'生活服务',
+				'电器通讯',
+				'汽修美容',
+				'医疗器械',
+				'家居建材',
+				'教育培训',
+				'酒店宾馆',
+				'其他'
+			], //经营行业
+
 			imgList: [],
 			imgSrcList: [],
+			formPage: 1,
 			formData: {
-				area: '区域', // 区域
+				area: '河南省郑州市管城区', // 区域
 				housingEstate: '所属小区', //所属小区
 				decorationType: '装修类型', //装修类型
 				useType: '用途', //用途
@@ -109,7 +251,22 @@ export default {
 				phone: '15999999999', //手机号
 				label: '标签', //标签
 				houseDescribe: '描述', //描述
-				ids: '' // 图片
+				ids: '', // 图片
+
+				shopType: -1, //商铺类型
+				isLinjie: -1, //是否临街
+				jingyingStatus: -1, //经营状态
+				saveType: 0, //（0出租 1售卖）
+				jingyingHangye: -1, //经营行业
+				address: '商都路街道', //详细地址
+				shopName: '悦之河精品酒店', //商铺名
+				floorStart: '13',
+				floorEnd: '18',
+				miankuan: '110', //面宽
+				cenggao: '3', //层高
+				jinshen: '18', //进深
+				money: '99999', //租金
+				wuyefei: '66666' //物业费
 			},
 
 			cityPickerValueDefault: [0, 0, 1],
@@ -123,9 +280,131 @@ export default {
 		});
 	},
 	methods: {
-		onConfirm(e) {
-			console.log(e);
+		// 发布商铺
+		saveShopInfo() {
+			let formData = Object.assign({}, this.formData);
+			if (!formData.area) {
+				this.showToast('请输入区域');
+				return false;
+			}
+			if (!formData.address) {
+				this.showToast('请输入详细地址');
+				return false;
+			}
+			if (!formData.shopName) {
+				this.showToast('请输入商铺名');
+				return false;
+			}
+			if (formData.floorStart === '') {
+				this.showToast('请输入开始楼层');
+				return false;
+			}
+			if (formData.floorEnd === '') {
+				this.showToast('请输入结束楼层');
+				return false;
+			}
+			if (formData.floorStart > formData.floorEnd) {
+				this.showToast('结束楼层不能比开始楼层高');
+				return false;
+			}
+			formData.floor = formData.floorStart + '-' + formData.floorEnd;
+			if (formData.shopType < 0) {
+				this.showToast('请选择商铺类型');
+				return false;
+			}
+			formData.shopType = this.shopTypeList[formData.shopType];
+			if (!formData.mianji) {
+				this.showToast('请输入面积');
+				return false;
+			}
+			if (formData.isLinjie < 0) {
+				this.showToast('请选择是否临街');
+				return false;
+			}
+			// formData.isLinjie = formData.isLinjie === 0 ? true: false;
+			formData.linjie = formData.isLinjie === 0 ? true: false;
+			if (!formData.miankuan) {
+				this.showToast('请输入面宽');
+				return false;
+			}
+			if (!formData.cenggao) {
+				this.showToast('请输入层高');
+				return false;
+			}
+			if (!formData.jinshen) {
+				this.showToast('请输入进深');
+				return false;
+			}
+			if (formData.jingyingStatus < 0) {
+				this.showToast('请选择经营状态');
+				return false;
+			}
+			formData.jingyingStatus = this.jingyingStatusList[formData.jingyingStatus];
+			if (formData.jingyingHangye < 0) {
+				this.showToast('请选择经营行业');
+				return false;
+			}
+			formData.jingyingHangye = this.jingyingHangyeList[formData.jingyingHangye];
+			if (formData.saveType < 0) {
+				this.showToast('请选择出租或出售');
+				return false;
+			}
+			formData.saleType = formData.saveType;
+			if (!formData.money && formData.saveType == 0) {
+				this.showToast('请输入租金');
+				return false;
+			}
+			if (!formData.money && formData.saveType == 1) {
+				this.showToast('请输入售价');
+				return false;
+			}
+			if (!formData.wuyefei) {
+				this.showToast('请输入物业费');
+				return false;
+			}
+			if (!formData.phone) {
+				this.showToast('请输入手机号');
+				return false;
+			}
+			if (!this.checkPhone(formData.phone)) {
+				this.showToast('请输入正确手机号');
+				return false;
+			}
+			if (this.imgSrcList.length <= 0) {
+				this.showToast('请上传图片');
+				return false;
+			}
+			formData.ids = this.imgSrcList.join(',');
+			console.log('formData', formData);
+			this.showLoading();
+			this.request({
+				url: '/rentSaleShop/save',
+				data: formData,
+				success: res => {
+					uni.hideLoading();
+					console.log('发布商铺', res);
+					if (res.data.code === 200) {
+						uni.showModal({
+							title: '发布结果',
+							content: '发布成功！',
+							showCancel: false,
+							success: res => {
+								uni.switchTab({
+									url: '/pages/index/index'
+								});
+							}
+						});
+					} else {
+						uni.showModal({
+							title: '发布结果',
+							content: res.data.message || '发布失败！',
+							showCancel: false
+						});
+					}
+				}
+			});
 		},
+		// 发布房子
 		saveHoustInfo() {
 			let formData = this.formData;
 			if (!formData.area) {
@@ -239,6 +518,8 @@ export default {
 					let url = this.uploadUrl + '/rentSaleHouse/uploadRentPic';
 					if (this.title === '我要卖房') {
 						url = this.uploadUrl + '/rentSaleHouse/uploadSalePic';
+					} else if (this.title !== '我要卖房' && this.title !== '我要出租') {
+						url = this.uploadUrl + '/rentSaleShop/upload';
 					}
 					uni.uploadFile({
 						url: url,
@@ -277,6 +558,19 @@ export default {
 			this.cityPickerValueDefault = [0, 0, 1];
 			this.$refs.simpleAddress.open();
 		},
+		/**
+		 * @param {Object} e
+		 * @param {String} type
+		 * 1装修类型
+		 * 2用途
+		 * 3年代
+		 * 4地区
+		 * 5商铺性质
+		 * 6是否临街
+		 * 7经营状态
+		 * 8经营行业
+		 * 9出租或出售
+		 */
 		bindPickerChange(e, type) {
 			console.log(e, type);
 			switch (type) {
@@ -291,6 +585,21 @@ export default {
 					break;
 				case 4:
 					this.formData.area = e.label;
+					break;
+				case 5:
+					this.formData.shopType = e.detail.value;
+					break;
+				case 6:
+					this.formData.isLinjie = e.detail.value;
+					break;
+				case 7:
+					this.formData.jingyingStatus = e.detail.value;
+					break;
+				case 8:
+					this.formData.jingyingHangye = e.detail.value;
+					break;
+				case 9:
+					this.formData.saveType = e.detail.value;
 					break;
 			}
 		}

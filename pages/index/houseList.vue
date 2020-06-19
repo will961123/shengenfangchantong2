@@ -7,7 +7,7 @@
 			</view>
 			<text>搜索</text>
 		</view>
-		<view @click="gotoHouseDetail(item.louPanId||item.id)" v-for="(item, index) in list" :key="index" class="item bg-white flex">
+		<view @click="gotoHouseDetail(item.louPanId || item.id||item.rentSaleShopId)" v-for="(item, index) in list" :key="index" class="item bg-white flex">
 			<image :src="item.indexPic" mode="scaleToFill"></image>
 			<view class="rightBox flex flex-direction justify-between">
 				<view class="name">{{ item.louPanName }}</view>
@@ -54,6 +54,9 @@ export default {
 			case '买二手房':
 				this.getAllSecondHandHouse();
 				break;
+				case '商铺':
+					this.getAllRentSaleShop();
+					break;
 		}
 	},
 	onReachBottom() {
@@ -67,9 +70,40 @@ export default {
 			case '买二手房':
 				this.getAllSecondHandHouse();
 				break;
+			case '商铺':
+				this.getAllRentSaleShop();
+				break;
 		}
 	},
 	methods: {
+		getAllRentSaleShop() {
+			this.showLoading();
+			this.request({
+				url: '/rentSaleShop/getAll',
+				data: {
+					page: this.houseListPage,
+					limit: 10
+				},
+				success: res => {
+					uni.hideLoading();
+					console.log('商铺', res,res.data.data.records);
+					if (res.data.code === 200) {
+						this.houseListPage++;
+						res.data.data.records = res.data.data.records.map(i => { 
+							i.indexPic = i.indexPic ? '' : i.picUrlList ? (i.picUrlList[0] ? i.picUrlList[0].url : '') : '';
+							i.louPanName = i.shopName;
+							i.houseType = i.shopType;
+							i.houseArea = i.mianji + 'm²';
+							i.price = i.money
+							i.lightSpot = i.address;
+							return i;
+						});
+						this.list.push(...res.data.data.records);
+						
+					}
+				}
+			});
+		},
 		getAllSecondHandHouse() {
 			this.showLoading();
 			this.request({
@@ -83,7 +117,7 @@ export default {
 					console.log('二手房', res);
 					if (res.data.code === 0) {
 						this.houseListPage++;
-						res.data.data = res.data.data.map(i => { 
+						res.data.data = res.data.data.map(i => {
 							i.createTime = i.year ? i.year.split('-')[0] : '年份未知';
 							i.indexPic = i.indexPic ? '' : i.picUrls ? (i.picUrls[0] ? i.picUrls[0].picUrl : '') : '';
 							i.louPanName = i.houseName;

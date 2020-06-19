@@ -108,7 +108,11 @@
 				"navigationBarTitleText": "发布房聊"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/roomChat/roomChatDetail",
+            "style" : {}
+        }
+    ],
 	"tabBar": {
 		"backgroundColor": "#ffffff",
 		"color": "#8a8a8a",
