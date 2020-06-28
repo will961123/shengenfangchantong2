@@ -7,7 +7,7 @@
 			</view>
 			<text>搜索</text>
 		</view>
-		<view @click="gotoHouseDetail(item.louPanId || item.id||item.rentSaleShopId)" v-for="(item, index) in list" :key="index" class="item bg-white flex">
+		<view @click="gotoHouseDetail(item.louPanId || item.id || item.rentSaleShopId||item.rentSaleOfficeId)" v-for="(item, index) in list" :key="index" class="item bg-white flex">
 			<image :src="item.indexPic" mode="scaleToFill"></image>
 			<view class="rightBox flex flex-direction justify-between">
 				<view class="name">{{ item.louPanName }}</view>
@@ -54,9 +54,12 @@ export default {
 			case '买二手房':
 				this.getAllSecondHandHouse();
 				break;
-				case '商铺':
-					this.getAllRentSaleShop();
-					break;
+			case '商铺':
+				this.getAllRentSaleShop();
+				break;
+			case '写字楼':
+				this.getAllOfficeBuilding();
+				break;
 		}
 	},
 	onReachBottom() {
@@ -73,9 +76,39 @@ export default {
 			case '商铺':
 				this.getAllRentSaleShop();
 				break;
+			case '写字楼':
+				this.getAllOfficeBuilding();
+				break;
 		}
 	},
 	methods: {
+		getAllOfficeBuilding() {
+			this.showLoading();
+			this.request({
+				url: '/rentSaleOffice/getAll',
+				data: {
+					page: this.houseListPage,
+					limit: 10
+				},
+				success: res => {
+					uni.hideLoading();
+					console.log('写字楼', res, res.data.data.records);
+					if (res.data.code === 200) {
+						this.houseListPage++;
+						res.data.data.records = res.data.data.records.map(i => {
+							i.indexPic = i.indexPic ? '' : i.picUrlList ? (i.picUrlList[0] ? i.picUrlList[0].url : '') : '';
+							i.louPanName = i.title ;
+							i.houseType = i.officeType;
+							i.houseArea = i.mianji + 'm²';
+							i.price = i.money;
+							i.lightSpot = i.address;
+							return i;
+						});
+						this.list.push(...res.data.data.records);
+					}
+				}
+			});
+		},
 		getAllRentSaleShop() {
 			this.showLoading();
 			this.request({
@@ -86,20 +119,19 @@ export default {
 				},
 				success: res => {
 					uni.hideLoading();
-					console.log('商铺', res,res.data.data.records);
+					console.log('商铺', res, res.data.data.records);
 					if (res.data.code === 200) {
 						this.houseListPage++;
-						res.data.data.records = res.data.data.records.map(i => { 
+						res.data.data.records = res.data.data.records.map(i => {
 							i.indexPic = i.indexPic ? '' : i.picUrlList ? (i.picUrlList[0] ? i.picUrlList[0].url : '') : '';
 							i.louPanName = i.shopName;
 							i.houseType = i.shopType;
 							i.houseArea = i.mianji + 'm²';
-							i.price = i.money
+							i.price = i.money;
 							i.lightSpot = i.address;
 							return i;
 						});
 						this.list.push(...res.data.data.records);
-						
 					}
 				}
 			});
