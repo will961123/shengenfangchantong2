@@ -342,6 +342,20 @@ export default {
 			pickerText: ''
 		};
 	},
+	onShow() {
+		this.checkLogin().then(res=>{},err=>{
+			 uni.showModal({
+			 	title:'提示',
+				content:'请先登录!',
+				showCancel:false,
+				success:res=>{
+					uni.switchTab({
+						url:'/pages/my/my'
+					})
+				}
+			 })
+		})
+	},
 	onLoad(options) {
 		options.title ? (this.title = options.title) : '';
 		uni.setNavigationBarTitle({

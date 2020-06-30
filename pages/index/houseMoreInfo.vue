@@ -101,6 +101,12 @@ export default {
 			this.getDetail();
 		}
 	},
+	onShareAppMessage() {
+		return {
+			title: '更多详情',
+			path: '/pages/index/houseMoreInfo?id=' + this.id + '&searchUserId=' + this.getUserId()
+		};
+	},
 	methods: {
 		getDetail() {
 			this.showLoading();

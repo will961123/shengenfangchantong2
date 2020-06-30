@@ -59,6 +59,12 @@ export default {
 	onLoad() {
 		this.getPostList();
 	},
+	onShareAppMessage() {
+		return {
+			title: '房聊',
+			path: '/pages/roomChat/roomChat?searchUserId=' + this.getUserId()
+		};
+	},
 	onReachBottom() {
 		// this.getPostList();
 	},

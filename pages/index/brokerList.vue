@@ -1,28 +1,30 @@
 <template>
 	<view class="brokerListView">
-		<view class="searchBox bg-white flex align-center">
+		<!-- <view class="searchBox bg-white flex align-center">
 			<view class="iptBox flex align-center">
 				<text class="cuIcon cuIcon-search"></text>
 				<input type="text" value="" placeholder="请输入搜索内容" />
 			</view>
 			<text>搜索</text>
-		</view>
+		</view> -->
 
-		<view v-for="(item, index) in list" :key="index" class="item bg-white flex align-start">
-			<image :src="item.pic" mode="aspectFill"></image>
+		<view v-for="(item, index) in list" :key="index" class="item bg-white flex align-center">
+<!-- 		<view v-for="(item, index) in list" :key="index" class="item bg-white flex align-start"> -->
+			<image :src="item.headPort" mode="aspectFill"></image>
 			<view class="infoBox">
 				<view class="nameBox flex justify-between align-center">
 					<view class="left">
-						<view class="name">{{ item.name }}</view>
-						<view class="company">{{ item.company }}</view>
+						<view class="name">{{ item.propName }}</view>
+						<!-- <view class="company">{{ item.company }}</view> -->
 					</view>
-					<view class="phoneBox"><text class="cuIcon cuIcon-phone"></text></view>
+					<view @click="call" :data-phone="item.phone " class="phoneBox"><text class="cuIcon cuIcon-phone"></text></view>
 				</view>
-				<view class="mainBusiness textOv1">
+				<!-- 	<view class="mainBusiness textOv1">
 					主营
 					<text v-for="(main, index) in item.mainBusiness" :key="index">{{ main }}&nbsp;</text>
-				</view>
-				<view class="year textOv1">服务平台{{ item.time }}年 近期带看{{ item.num }}次 服务{{ item.peopleNum }}人</view>
+				</view> -->
+				<view class="year textOv1">电话:{{ item.phone }}</view>
+				<!--  <view class="year textOv1">服务平台{{ item.time }}年 近期带看{{ item.num }}次 服务{{ item.peopleNum }}人</view> -->
 			</view>
 		</view>
 	</view>
@@ -33,26 +35,44 @@ export default {
 	data() {
 		return {
 			list: [
-				{
-					pic: '/static/logo.png',
-					name: '夏江川',
-					company: '博悦恒大名都店',
-					mainBusiness: ['郾城-郾城城区', '源汇-源汇城区', '源汇-源汇城区' ],
-					time: '1-3',
-					num: 2,
-					peopleNum: 55
-				},
-				{
-					pic: '/static/logo.png',
-					name: '夏江川',
-					company: '博悦恒大名都店',
-					mainBusiness: ['郾城-郾城城区', '源汇-源汇城区'],
-					time: '1-3',
-					num: 2,
-					peopleNum: 55
-				}
+				// {
+				// 	pic: '/static/logo.png',
+				// 	name: '夏江川',
+				// 	company: '博悦恒大名都店',
+				// 	mainBusiness: ['郾城-郾城城区', '源汇-源汇城区', '源汇-源汇城区'],
+				// 	time: '1-3',
+				// 	num: 2,
+				// 	peopleNum: 55
+				// }
 			]
 		};
+	},
+	onLoad() {
+		this.getList();
+	},
+	onShareAppMessage() {
+		return {
+			title: '经纪人',
+			path: '/pages/index/brokerList?searchUserId=' + this.getUserId()
+		};
+	},
+	methods: {
+		call(e){ 
+			uni.makePhoneCall({
+				phoneNumber:e.currentTarget.dataset.phone
+			})
+		},
+		getList() {
+			this.showLoading();
+			this.request({
+				url: '/LouPanInfo/allProp',
+				success: res => {
+					uni.hideLoading();
+					console.log('经纪人列表', res);
+					this.list = res.data.data;
+				}
+			});
+		}
 	}
 };
 </script>

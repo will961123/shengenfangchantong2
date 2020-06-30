@@ -46,6 +46,7 @@
 					@click="navgater"
 					:data-path="item.path"
 					:data-title="item.title"
+					:data-type="item.type"
 					v-for="(item, index) in encyclopedias"
 					:key="index"
 					class="item flex flex-direction justify-between align-center"
@@ -93,7 +94,9 @@
 			<view
 				@click="navgater"
 				data-path="/pages/index/houseDetail"
-				:data-title="item.louPanId"
+				data-title="买新房"
+				:data-id="item.louPanId"
+				data-type="houseDetail"
 				v-for="(item, index) in guessYouLike.list"
 				:key="index"
 				class="item bg-white flex"
@@ -166,9 +169,9 @@ export default {
 				// { title: '贷款', icon: '/static/encyclopedia4.png' },
 				// { title: '经纪人', icon: '/static/encyclopedia5.png' }
 				{ title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle' },
-				{ title: '资讯', icon: '/static/encyclopedia2.png' },
+				{ title: '资讯', icon: '/static/encyclopedia2.png', path: '/pages/news/news', type: 'tabbar' },
 				{ title: '房贷计算器', icon: '/static/encyclopedia4.png' },
-				{ title: '经纪人', icon: '/static/encyclopedia5.png' }
+				{ title: '经纪人', icon: '/static/encyclopedia5.png', path: '/pages/index/brokerList' }
 			],
 			dayNewsList: [],
 			guessYouLikePage: 1,
@@ -187,6 +190,12 @@ export default {
 		this.getdayNewsList();
 		this.getGuessYouLike();
 		this.getBannerList();
+	},
+	onShareAppMessage() {
+		return {
+			title: '首页',
+			path: '/pages/index/index?searchUserId=' + this.getUserId()
+		};
 	},
 	onReachBottom() {
 		this.getGuessYouLike();
@@ -240,9 +249,20 @@ export default {
 			console.log(e);
 			let path = e.currentTarget.dataset.path;
 			let title = e.currentTarget.dataset.title;
-			uni.navigateTo({
-				url: path + '?title=' + title + '&id=' + title
-			});
+			let type = e.currentTarget.dataset.type || '';
+			if (type === 'tabbar') {
+				uni.switchTab({
+					url: path
+				});
+			} else if (type === 'houseDetail') {
+				uni.navigateTo({
+					url: path + '?title=' + title + '&id=' + e.currentTarget.dataset.id
+				});
+			} else {
+				uni.navigateTo({
+					url: path + '?title=' + title + '&id=' + title
+				});
+			}
 		}
 	}
 };

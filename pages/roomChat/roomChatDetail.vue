@@ -14,11 +14,9 @@
 						</view>
 					</view>
 				</view>
-				<view v-if="postDetail.address" class="addressBox text-gray">
-					{{ postDetail.address }}
-				</view>
+				<view v-if="postDetail.address" class="addressBox text-gray">{{ postDetail.address }}</view>
 				<view class="dateBox flex justify-between align-center">
-					<view class="flex align-center">{{ postDetail.createTime.split(' ')[0] }}</view>
+					<view class="flex align-center">{{ postDetail.createTime }}</view>
 					<text
 						@click="showAddComment"
 						:data-type="1"
@@ -86,11 +84,34 @@ export default {
 			imgList: []
 		};
 	},
+	onShow() {
+		this.checkLogin().then(
+			res => {},
+			err => {
+				uni.showModal({
+					title: '提示',
+					content: '请先登录!',
+					showCancel: false,
+					success: res => {
+						uni.switchTab({
+							url: '/pages/my/my'
+						});
+					}
+				});
+			}
+		);
+	},
 	onLoad(options) {
 		if (options.id) {
 			this.id = options.id;
 			this.getDetail();
 		}
+	},
+	onShareAppMessage() {
+		return {
+			title: '房聊详情',
+			path: '/pages/roomChat/roomChatDetail?id=' + this.id + '&searchUserId=' + this.getUserId()
+		};
 	},
 	methods: {
 		showAddComment(e) {
@@ -115,6 +136,7 @@ export default {
 					console.log('post detail', res);
 					if (res.data.code === 200) {
 						this.postDetail = res.data.data;
+						this.postDetail.createTime = this.postDetail.createTime.split(' ')[0];
 						this.imgList = this.postDetail.picUrlList.map(i => {
 							return i.url;
 						});
@@ -129,7 +151,8 @@ export default {
 				userId: this.getUserId(),
 				content: this.newCommentText
 			};
-			if (this.commentType === '2') {
+			if (this.commentType == '2') {
+				console.log('这是二级评论啊')
 				formData.firstId = this.commentId;
 				url = '/microcosm/twoSave';
 			}
@@ -163,7 +186,7 @@ export default {
 				}
 			});
 		},
-		ViewImage(e) { 
+		ViewImage(e) {
 			uni.previewImage({
 				urls: this.imgList,
 				current: e.currentTarget.dataset.url
@@ -220,7 +243,7 @@ export default {
 				margin-top: 6rpx;
 			}
 		}
-		.addressBox{
+		.addressBox {
 			font-size: 24rpx;
 			margin-top: 30rpx;
 		}

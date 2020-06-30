@@ -1,13 +1,18 @@
 <template>
 	<view class="houseListView">
-		<view class="searchBox bg-white flex align-center">
+		<!-- <view class="searchBox bg-white flex align-center">
 			<view class="iptBox flex align-center">
 				<text class="cuIcon cuIcon-search"></text>
 				<input type="text" value="" placeholder="请输入搜索内容" />
 			</view>
 			<text>搜索</text>
-		</view>
-		<view @click="gotoHouseDetail(item.louPanId || item.id || item.rentSaleShopId||item.rentSaleOfficeId)" v-for="(item, index) in list" :key="index" class="item bg-white flex">
+		</view> -->
+		<view
+			@click="gotoHouseDetail(item.louPanId || item.id || item.rentSaleShopId || item.rentSaleOfficeId)"
+			v-for="(item, index) in list"
+			:key="index"
+			class="item bg-white flex"
+		>
 			<image :src="item.indexPic" mode="scaleToFill"></image>
 			<view class="rightBox flex flex-direction justify-between">
 				<view class="name">{{ item.louPanName }}</view>
@@ -62,6 +67,12 @@ export default {
 				break;
 		}
 	},
+	onShareAppMessage() {
+		return {
+			title: this.title || '买新房',
+			path: '/pages/index/houseList?title=' + (this.title || '买新房') + '&searchUserId=' + this.getUserId()
+		};
+	},
 	onReachBottom() {
 		switch (this.title) {
 			case '买新房':
@@ -97,7 +108,7 @@ export default {
 						this.houseListPage++;
 						res.data.data.records = res.data.data.records.map(i => {
 							i.indexPic = i.indexPic ? '' : i.picUrlList ? (i.picUrlList[0] ? i.picUrlList[0].url : '') : '';
-							i.louPanName = i.title ;
+							i.louPanName = i.title;
 							i.houseType = i.officeType;
 							i.houseArea = i.mianji + 'm²';
 							i.price = i.money;

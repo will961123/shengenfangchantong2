@@ -144,7 +144,7 @@
 									<view class="grey" style="font-size:26rpx">详细地址：</view>
 									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.address }}</view>
 								</view>
-								<view v-if="title==='商铺'" style="display:flex;align-items:center;line-height: 26px;">
+								<view v-if="title === '商铺'" style="display:flex;align-items:center;line-height: 26px;">
 									<view class="grey" style="font-size:26rpx">商铺名：</view>
 									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.shopName }}</view>
 								</view>
@@ -154,13 +154,13 @@
 								</view>
 								<view style="display:flex;align-items:center;line-height: 26px;">
 									<view class="grey" style="font-size:26rpx">类型：</view>
-									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{houseInfo.saleType?'出售':'出租'}}</view>
+									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.saleType ? '出售' : '出租' }}</view>
 								</view>
 								<view style="display:flex;align-items:center;line-height: 26px;">
 									<view class="grey" style="font-size:26rpx">起始楼层：</view>
 									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.floor }}</view>
 								</view>
-								<view v-if="title==='商铺'" style="display:flex;align-items:center;line-height: 26px;">
+								<view v-if="title === '商铺'" style="display:flex;align-items:center;line-height: 26px;">
 									<view class="grey" style="font-size:26rpx">商铺类型：</view>
 									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.shopType }}</view>
 								</view>
@@ -172,7 +172,7 @@
 									<view class="grey" style="font-size:26rpx">建筑面积：</view>
 									<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.mianji }}m²</view>
 								</view>
-								<view v-if="title==='商铺'" >
+								<view v-if="title === '商铺'">
 									<view style="display:flex;align-items:center;line-height: 26px;">
 										<view class="grey" style="font-size:26rpx">是否临街：</view>
 										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.isLinjie ? '是' : '否' }}</view>
@@ -202,27 +202,25 @@
 										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.wuyefei }}</view>
 									</view>
 								</view>
-								
-								<view v-if="title==='写字楼'">
-									
+
+								<view v-if="title === '写字楼'">
 									<view style="display:flex;align-items:center;line-height: 26px;">
 										<view class="grey" style="font-size:26rpx">联系人：</view>
-										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{houseInfo.contact}}</view>
+										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.contact }}</view>
 									</view>
 									<view style="display:flex;align-items:center;line-height: 26px;">
 										<view class="grey" style="font-size:26rpx">发布者身份：</view>
-										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{houseInfo.identity}}</view>
+										<view class="tel1 addressov1" style="font-size:26rpx;margin-top:0">{{ houseInfo.identity }}</view>
 									</view>
-									<view   style="display:flex; line-height: 26px;">
+									<view style="display:flex; line-height: 26px;">
 										<view class="grey" style="font-size:26rpx;">描述：</view>
 										<view class="tel1 " style="font-size:26rpx;margin-top:0;flex:1">{{ houseInfo.officeDescribe }}</view>
 									</view>
-									<view   style="display:flex; line-height: 26px;">
+									<view style="display:flex; line-height: 26px;">
 										<view class="grey" style="font-size:26rpx;">配套：</view>
 										<view class="tel1 " style="font-size:26rpx;margin-top:0;flex:1">{{ houseInfo.peitao }}</view>
 									</view>
 								</view>
-								
 							</view>
 						</view>
 					</view>
@@ -328,8 +326,17 @@ export default {
 			this.title === '买新房' && this.getNewsList();
 		}
 	},
+	onShareAppMessage() {
+		return {
+			title: this.title || '买新房',
+			path: '/pages/index/houseDetail?id=' + this.id + '&title=' + (this.title || '买新房') + '&searchUserId=' + this.getUserId()
+		};
+	},
 	methods: {
 		gotoGouseDetailImg() {
+			if (this.title !== '买新房') {
+				return false;
+			}
 			uni.navigateTo({
 				url: '/pages/index/houseDetailImg?id=' + this.id
 			});
@@ -429,8 +436,8 @@ export default {
 						res.data.data.year = res.data.data.year ? res.data.data.year.split(' ')[0] : '年份未知';
 						res.data.data.louPanName = res.data.data.title;
 						res.data.data.price = res.data.data.money;
-						
-						res.data.data.jingyingStatus = res.data.data.officeType
+
+						res.data.data.jingyingStatus = res.data.data.officeType;
 						this.houseInfo = res.data.data;
 						this.getAround(this.peitao[0].name);
 					}

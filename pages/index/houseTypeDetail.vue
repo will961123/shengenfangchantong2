@@ -58,6 +58,12 @@ export default {
 			this.getHouseTypeDetailById();
 		}
 	},
+	onShareAppMessage() {
+		return {
+			title: '户型详情',
+			path: '/pages/index/houseTypeDetail?id=' + this.id + '&searchUserId=' + this.getUserId()
+		};
+	},
 	methods: {
 		getHouseTypeDetailById() {
 			this.showLoading();

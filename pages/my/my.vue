@@ -6,7 +6,7 @@
 				<image :src="userInfo.avatarUrl || '/static/logo.png'" mode="aspectFill"></image>
 				<text>{{ userInfo.nickName || '请登录' }}</text>
 			</view>
-			<text class="cuIcon cuIcon-right"></text>
+			<!-- <text class="cuIcon cuIcon-right"></text> -->
 		</view>
 
 		<view class="menuBox">
@@ -30,6 +30,12 @@ export default {
 	onShow() {
 		this.userInfo = uni.getStorageSync('userInfo');
 		this.userId = this.getUserId();
+	},
+	onShareAppMessage() {
+		return {
+			title: '我的',
+			path: '/pages/my/my?searchUserId=' + this.getUserId()
+		};
 	},
 	methods: {
 		getUserInfo(e) {
@@ -58,7 +64,7 @@ export default {
 										success: userInfo => {
 											uni.hideLoading();
 											console.log('服务器返回userInfo', userInfo);
-											console.log(userInfo.data.data)
+											console.log(userInfo.data.data);
 											if (userInfo.data.code === 200) {
 												uni.setStorageSync('userInfo', userInfo.data.data);
 												uni.setStorageSync('userId', userInfo.data.data.userId);

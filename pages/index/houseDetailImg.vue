@@ -44,8 +44,14 @@ export default {
 			this.getImgList();
 		}
 	},
+	onShareAppMessage() {
+		return {
+			title: '房源详情',
+			path: '/pages/index/houseDetailImg?id=' + this.id + '&searchUserId=' + this.getUserId()
+		};
+	},
 	methods: {
-		preview(event) { 
+		preview(event) {
 			let currentUrl = event.currentTarget.dataset.src;
 			uni.previewImage({
 				current: currentUrl, // 当前显示图片的http链接

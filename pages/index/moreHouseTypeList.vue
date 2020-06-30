@@ -49,6 +49,12 @@ export default {
 			this.getHouseTypeTabListById();
 		}
 	},
+	onShareAppMessage() {
+		return {
+			title: '更多户型',
+			path: '/pages/index/moreHouseTypeList?id=' + this.id + '&searchUserId=' + this.getUserId()
+		};
+	},
 	filters: {
 		romm(num) {
 			if (num == 0) return '全部';

@@ -37,6 +37,12 @@ export default {
 		options.id ? (this.id = options.id) : '';
 		this.id && this.getDetail();
 	},
+	onShareAppMessage() {
+		return {
+			title: '资讯详情',
+			path: '/pages/index/articleDetail?id=' + this.id + '&searchUserId=' + this.getUserId()
+		};
+	},
 	methods: {
 		getDetail() {
 			this.showLoading();
