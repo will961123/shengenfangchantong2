@@ -13,7 +13,7 @@ Vue.prototype.isLoad = function() {
 }
 Vue.prototype.checkLogin = function() {
 	return new Promise((reslove, reject) => {
-		if (uni.getStorageSync('openId')) {
+		if (uni.getStorageSync('userId')) {
 			reslove()
 			console.log('已登录')
 		} else {

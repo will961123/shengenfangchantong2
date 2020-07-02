@@ -10,8 +10,7 @@
 		</view>
 
 		<view class="menuBox">
-			<view class="item bg-white flex align-center">
-				<!-- <image src="../../static/logo.png" mode="widthFix"></image> -->
+			<view @click="gotoSysNote" class="item bg-white flex align-center"> 
 				<text style="font-size: 42rpx;margin-right: 16rpx;" class=" cuIcon cuIcon-notice "></text>
 				系统通知
 			</view>
@@ -38,6 +37,11 @@ export default {
 		};
 	},
 	methods: {
+		gotoSysNote(){
+			uni.navigateTo({
+				url:'/pages/my/sysNote'
+			})
+		},
 		getUserInfo(e) {
 			console.log('按钮', e);
 			this.showLoading();
@@ -56,23 +60,38 @@ export default {
 								if (openId.statusCode === 200) {
 									uni.setStorageSync('openId', openId.data.openid);
 									this.openid = openId.data.openid;
+									e.detail.userInfo.openId = this.openid;
 									this.request({
-										url: '/user/userInfo',
-										data: {
-											openId: openId.data.openid
-										},
-										success: userInfo => {
-											uni.hideLoading();
-											console.log('服务器返回userInfo', userInfo);
-											console.log(userInfo.data.data);
-											if (userInfo.data.code === 200) {
-												uni.setStorageSync('userInfo', userInfo.data.data);
-												uni.setStorageSync('userId', userInfo.data.data.userId);
-												this.userInfo = userInfo.data.data;
-												this.userId = userInfo.data.data.userId;
-											}
+										url: '/user/saveUserInfo',
+										data: e.detail.userInfo,
+										success: saveUser => {
+											uni.hideLoading()
+											// 1278259914808606722
+											console.log('saveUser', saveUser);
+											uni.setStorageSync('userInfo', e.detail.userInfo);
+											uni.setStorageSync('userId', saveUser.data.data);
+											this.userInfo = e.detail.userInfo;
+											this.userId = saveUser.data.data;
 										}
 									});
+									// return;
+									// this.request({
+									// 	url: '/user/userInfo',
+									// 	data: {
+									// 		openId: openId.data.openid
+									// 	},
+									// 	success: userInfo => {
+									// 		uni.hideLoading();
+									// 		console.log('服务器返回userInfo', userInfo);
+									// 		console.log(userInfo.data.data);
+									// 		if (userInfo.data.code === 200) {
+									// 			uni.setStorageSync('userInfo', userInfo.data.data);
+									// 			uni.setStorageSync('userId', userInfo.data.data.userId);
+									// 			this.userInfo = userInfo.data.data;
+									// 			this.userId = userInfo.data.data.userId;
+									// 		}
+									// 	}
+									// });
 								} else {
 									uni.hideLoading();
 									uni.showModal({

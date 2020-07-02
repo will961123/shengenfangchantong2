@@ -11,12 +11,14 @@ Vue.prototype.apiUrl = '/h5api'
 Vue.prototype.uploadUrl = '/h5upload'
 // #endif
 // #ifndef H5
-Vue.prototype.apiUrl = 'http://192.168.0.111:8075/mobile'
-Vue.prototype.uploadUrl = 'http://192.168.0.111:8075/mobile'
+// Vue.prototype.apiUrl = 'http://192.168.0.111:8075/mobile'
+// Vue.prototype.uploadUrl = 'http://192.168.0.111:8075/mobile'
+
+Vue.prototype.apiUrl = 'https://fangchantong.hnshengen.com/mobile'
+Vue.prototype.uploadUrl = 'https://fangchantong.hnshengen.com/mobile'
 // #endif
 
 
 // #ifdef MP-WEIXIN
-Vue.prototype.appId = 'wx51fed674e0817015'
-Vue.prototype.appScret = '6c6099dde5485fbc3b173d288a350325'
+Vue.prototype.appId = 'wx0d059ba3c0d019a3' 
 // #endif

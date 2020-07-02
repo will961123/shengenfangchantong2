@@ -27,9 +27,9 @@
 				</view>
 				<view class="commentBox ">
 					<view class="likeBox flex align-center">
-						<text class="cuIcon cuIcon-like"></text>
-						<image v-if="index < 6" v-for="(like, index) in postDetail.likeList" :key="index" :src="like.pic" mode="aspectFill"></image>
-						等{{ 1 }}人点赞
+						<text @click="setLike(postDetail.isSupport)" class="cuIcon  " :class="postDetail.isSupport ? 'cuIcon-likefill text-red' : 'cuIcon-like'"></text>
+						<image v-if="index < 5" v-for="(like, index) in postDetail.five" :key="index" :src="like.avatarUrl" mode="aspectFill"></image>
+						等{{ postDetail.supportCount }}人点赞
 					</view>
 					<view
 						@click="showAddComment"
@@ -85,6 +85,9 @@ export default {
 		};
 	},
 	onShow() {
+		// #ifdef H5
+		uni.setStorageSync('userId', '1262186392264990722');
+		// #endif
 		this.checkLogin().then(
 			res => {},
 			err => {
@@ -114,6 +117,36 @@ export default {
 		};
 	},
 	methods: {
+		setLike(type) {
+			let formData = {
+				microcosmId: this.id,
+				userId: this.getUserId()
+			};
+			let url = '/microcosm/support';
+			if (type) {
+				url = '/microcosm/deleteSupport';
+			}
+			this.showLoading();
+			this.request({
+				url,
+				data: formData,
+				success: res => {
+					uni.hideLoading();
+					console.log('like', res);
+					this.getDetail()
+					return
+					let postDetail = Object.assign({}, this.postDetail);
+					if (type) {
+						postDetail.isSupport = false;
+						postDetail.supportCount--;
+					} else {
+						postDetail.isSupport = true;
+						postDetail.supportCount++;
+					}
+					this.postDetail = postDetail;
+				}
+			});
+		},
 		showAddComment(e) {
 			let commentUserName = e.currentTarget.dataset.name;
 			let commentId = e.currentTarget.dataset.id;
@@ -129,7 +162,8 @@ export default {
 			this.request({
 				url: '/microcosm/detail',
 				data: {
-					microcosmId: this.id
+					microcosmId: this.id,
+					userId: this.getUserId()
 				},
 				success: res => {
 					uni.hideLoading();
@@ -152,7 +186,7 @@ export default {
 				content: this.newCommentText
 			};
 			if (this.commentType == '2') {
-				console.log('这是二级评论啊')
+				console.log('这是二级评论啊');
 				formData.firstId = this.commentId;
 				url = '/microcosm/twoSave';
 			}

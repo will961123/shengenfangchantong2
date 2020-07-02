@@ -57,7 +57,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx177f22e4e3610066",
+        "appid" : "wx0d059ba3c0d019a3",
         "setting" : {
             "urlCheck" : false
         },
@@ -85,7 +85,8 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/h5api" : {
-                    "target" : "http://192.168.0.111:8075/mobile",
+                    // "target" : "http://192.168.0.111:8075/mobile",
+                    "target" : "https://fangchantong.hnshengen.com/mobile",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
@@ -93,7 +94,8 @@
                     }
                 },
                 "/h5upload" : {
-                    "target" : "http://192.168.0.111:8075/mobile",
+					 // "target" : "http://192.168.0.111:8075/mobile",
+                    "target" : "https://fangchantong.hnshengen.com/mobile",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

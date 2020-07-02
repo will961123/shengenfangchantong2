@@ -112,6 +112,10 @@
             "path" : "pages/roomChat/roomChatDetail",
             "style" : {}
         }
+        ,{
+            "path" : "pages/my/sysNote",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"backgroundColor": "#ffffff",

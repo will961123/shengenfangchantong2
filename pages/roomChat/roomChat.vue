@@ -14,14 +14,10 @@
 				<!-- <view class="contentPic"><image :src="item.contentPic" mode="widthFix"></image></view> -->
 				<view v-if="item.picUrlList.length > 0" class="cu-form-group" style="padding: 0;">
 					<view class="grid col-3 grid-square flex-sub">
-						<view class="bg-img" v-for="(img, idx) in item.picUrlList" :key="idx" :data-url="item.url">
-							<image :src="img.url" mode="aspectFill"></image>
-						</view>
+						<view class="bg-img" v-for="(img, idx) in item.picUrlList" :key="idx" :data-url="item.url"><image :src="img.url" mode="aspectFill"></image></view>
 					</view>
 				</view>
-				<view v-if="item.address" class="addressBox text-gray">
-					{{ item.address }}
-				</view>
+				<view v-if="item.address" class="addressBox text-gray">{{ item.address }}</view>
 				<view class="dateBox flex justify-between align-center">
 					<view class="flex align-center">
 						{{ item.createTime.split(' ')[0] }}
@@ -30,12 +26,12 @@
 					</view>
 					<text class="cuIcon cuIcon-commentfill text-blue"></text>
 				</view>
-				
+
 				<view class="commentBox ">
 					<view class="likeBox flex align-center">
 						<text class="cuIcon cuIcon-like"></text>
-						<image v-if="index < 6" v-for="(like, index) in item.likeList" :key="index" :src="like.pic" mode="aspectFill"></image>
-						等{{ 1 }}人点赞
+						<image v-if="index < 6" v-for="(like, index) in item.five" :key="index" :src="like.avatarUrl" mode="aspectFill"></image>
+						等{{ item.supportCount }}人点赞
 					</view>
 					<view v-if="index < 5" v-for="(commit, index) in item.first" :key="index" class="commitItem">
 						<text class="text-blue">{{ commit.nickName }}:</text>
@@ -56,9 +52,12 @@ export default {
 			page: 1
 		};
 	},
-	onLoad() {
+	onShow() {
+		this.page = 1
+		this.postList = []
 		this.getPostList();
 	},
+	onLoad() {},
 	onShareAppMessage() {
 		return {
 			title: '房聊',
@@ -66,7 +65,7 @@ export default {
 		};
 	},
 	onReachBottom() {
-		// this.getPostList();
+		this.getPostList();
 	},
 	methods: {
 		gotoPostDetail(e) {
@@ -145,7 +144,7 @@ export default {
 				margin-top: 6rpx;
 			}
 		}
-		.addressBox{
+		.addressBox {
 			font-size: 24rpx;
 			margin-top: 30rpx;
 		}

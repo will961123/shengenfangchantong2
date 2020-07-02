@@ -114,7 +114,7 @@ export default {
 							showCancel: false,
 							success: res => {
 								uni.switchTab({
-									url: '/pages/index/index'
+									url: '/pages/roomChat/roomChat'
 								});
 							}
 						});
