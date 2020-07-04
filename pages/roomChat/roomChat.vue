@@ -41,6 +41,8 @@
 				</view>
 			</view>
 		</view>
+		
+		<will-nodata v-if="postList.length == 0" tittle="暂未开放"></will-nodata>
 	</view>
 </template>
 

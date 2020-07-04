@@ -286,7 +286,7 @@ export default {
 			officeBuildingTypeList: ['纯写字楼', '商业综合体', '商务公寓', '商务酒店'], // 写字楼类型
 			officeBuildingPeitao: [
 				{ name: '宽带', select: false },
-				{ name: '水', select: true },
+				{ name: '水', select: false },
 				{ name: '电', select: false },
 				{ name: '电话', select: false },
 				{ name: '中央空调', select: false },
@@ -303,19 +303,19 @@ export default {
 			imgSrcList: [],
 			formPage: 1,
 			formData: {
-				area: '河南省郑州市管城区', // 区域
-				housingEstate: '所属小区', //所属小区
-				decorationType: '装修类型', //装修类型
-				useType: '用途', //用途
-				houseName: '房屋名字', //房屋名字
-				price: '88.8', //房屋售价
-				apartmentLayout: '户型', //户型
+				area: '', // 区域
+				housingEstate: '', //所属小区
+				decorationType: '', //装修类型
+				useType: '', //用途
+				houseName: '', //房屋名字
+				price: '', //房屋售价
+				apartmentLayout: '', //户型
 				year: '', //年代
-				mianji: '110', //面积
-				floor: '13', //楼层
-				phone: '15999999999', //手机号
-				label: '标签', //标签
-				houseDescribe: '描述', //描述
+				mianji: '', //面积
+				floor: '', //楼层
+				phone: '', //手机号
+				label: '', //标签
+				houseDescribe: '', //描述
 				ids: '', // 图片
 
 				shopType: -1, //商铺类型
@@ -323,18 +323,18 @@ export default {
 				jingyingStatus: -1, //经营状态
 				saveType: 0, //（0出租 1售卖）
 				jingyingHangye: -1, //经营行业
-				address: '商都路街道', //详细地址
-				shopName: '悦之河精品酒店', //商铺名
-				floorStart: '13',
-				floorEnd: '18',
-				miankuan: '110', //面宽
-				cenggao: '3', //层高
-				jinshen: '18', //进深
-				money: '99999', //租金
-				wuyefei: '66666', //物业费
+				address: '', //详细地址
+				shopName: '', //商铺名
+				floorStart: '',
+				floorEnd: '',
+				miankuan: '', //面宽
+				cenggao: '', //层高
+				jinshen: '', //进深
+				money: '', //租金
+				wuyefei: '', //物业费
 
 				officeBuildingType: -1, //写字楼类型
-				contact: '联系人', // 写字楼联系人
+				contact: '', // 写字楼联系人
 				identity: -1 //发布者身份
 			},
 

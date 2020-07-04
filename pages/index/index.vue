@@ -168,9 +168,9 @@ export default {
 				// { title: '知识', icon: '/static/encyclopedia3.png' },
 				// { title: '贷款', icon: '/static/encyclopedia4.png' },
 				// { title: '经纪人', icon: '/static/encyclopedia5.png' }
-				{ title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle' },
+				// { title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle' },
 				{ title: '资讯', icon: '/static/encyclopedia2.png', path: '/pages/news/news', type: 'tabbar' },
-				{ title: '房贷计算器', icon: '/static/encyclopedia4.png' },
+				// { title: '房贷计算器', icon: '/static/encyclopedia4.png' },
 				{ title: '经纪人', icon: '/static/encyclopedia5.png', path: '/pages/index/brokerList' }
 			],
 			dayNewsList: [],
@@ -190,6 +190,7 @@ export default {
 		this.getdayNewsList();
 		this.getGuessYouLike();
 		this.getBannerList();
+		this.getConfig()
 	},
 	onShareAppMessage() {
 		return {
@@ -201,6 +202,18 @@ export default {
 		this.getGuessYouLike();
 	},
 	methods: {
+		getConfig(){ 
+			this.request({
+				url:'/microcosm/status',
+				data:{},
+				success:res=>{
+					console.log('status',res)
+					if(res.data.data === 'true'){
+						this.encyclopedias.unshift({title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle'})
+					}
+				}
+			}) 
+		},
 		getBannerList() {
 			this.request({
 				url: '/LouPanInfo/indexLunBo',
