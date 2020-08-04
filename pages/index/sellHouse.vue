@@ -224,8 +224,8 @@
 					<view v-if="title === '出租商铺'" class="item flex align-center">
 						<view class="tit">物业费(元/月)</view>
 						<view class="iptbox flex align-center"><input type="text" v-model="formData.wuyefei" placeholder="请输入物业费" /></view>
-					</view>
-					<view v-if="formData.saveType === 1" class="item flex align-center">
+					</view> 
+					<view v-if="formData.saveType == 1" class="item flex align-center">
 						<view class="tit">售价(万元/套)</view>
 						<view class="iptbox flex align-center"><input type="text" v-model="formData.money" placeholder="请输入售价" /></view>
 					</view>
@@ -343,24 +343,24 @@ export default {
 		};
 	},
 	onShow() {
-		this.checkLogin().then(res=>{},err=>{
-			 uni.showModal({
-			 	title:'提示',
-				content:'请先登录!',
-				showCancel:false,
-				success:res=>{
-					uni.switchTab({
-						url:'/pages/my/my'
-					})
-				}
-			 })
-		})
+		// this.checkLogin().then(res=>{},err=>{
+		// 	 uni.showModal({
+		// 	 	title:'提示',
+		// 		content:'请先登录!',
+		// 		showCancel:false,
+		// 		success:res=>{
+		// 			uni.switchTab({
+		// 				url:'/pages/my/my'
+		// 			})
+		// 		}
+		// 	 })
+		// })
 	},
 	onLoad(options) {
 		options.title ? (this.title = options.title) : '';
-		uni.setNavigationBarTitle({
-			title: this.title
-		});
+		// uni.setNavigationBarTitle({
+		// 	title: this.title
+		// });
 	},
 	methods: {
 		changeOfficeBuildingPeitao(idx) {

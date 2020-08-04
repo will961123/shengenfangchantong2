@@ -8,7 +8,7 @@
 				</swiper-item>
 			</swiper>
 			<view style="padding:0 30rpx">
-				<view v-if="title === '买新房'" class="content">
+				<view v-if="title === '新房'" class="content">
 					<view class="houseInfo bra6">
 						<view class="state">
 							<text class="bra6 red">{{ houseInfo.saleStatus == '1' ? '在售' : '待售' }}</text>
@@ -40,7 +40,7 @@
 					<!-- <view class="videoEnter bra6 mb30"><image mode="aspectFill" :src="houseInfo.loupanAdPic"></image></view> -->
 				</view>
 
-				<view v-else-if="title === '买二手房' || title === '找租房'">
+				<view v-else-if="title === '二手房' || title === '找租房'">
 					<view class="content">
 						<view class="houseInfo bra6">
 							<view class="state">
@@ -227,7 +227,7 @@
 				</view>
 
 				<!-- 户型区域 -->
-				<view v-if="title === '买新房'" class="hx_detailBox" style="margin-bottom: 30rpx;border-radius: 6rpx;">
+				<view v-if="title === '新房'" class="hx_detailBox" style="margin-bottom: 30rpx;border-radius: 6rpx;">
 					<view class="hx_box">
 						<view class="hx_title">户型推荐</view>
 						<view class="hx_more" @click="gotoHouseTypeList">查看更多 ></view>
@@ -249,7 +249,7 @@
 					</swiper>
 				</view>
 				<!-- 新闻资讯 -->
-				<view v-if="title === '买新房'" class="news bra6 mb30">
+				<view v-if="title === '新房'" class="news bra6 mb30">
 					<view class="hx_box"><view class="hx_title">企业新闻</view></view>
 					<view>
 						<view v-for="(item, index) in newsList" :key="index" class="li" @click="goToNewsInfo(item.id)">
@@ -300,7 +300,7 @@ export default {
 	data() {
 		return {
 			id: '',
-			title: '买新房',
+			title: '新房',
 			peitao: [
 				{ pic: '/static/houseInfoPT1.png', name: '交通' },
 				{ pic: '/static/houseInfoPT2.png', name: '学校' },
@@ -323,18 +323,18 @@ export default {
 			this.id = options.id;
 			this.title = options.title;
 			this.getDetail();
-			this.title === '买新房' && this.getNewsList();
+			this.title === '新房' && this.getNewsList();
 		}
 	},
 	onShareAppMessage() {
 		return {
-			title: this.title || '买新房',
-			path: '/pages/index/houseDetail?id=' + this.id + '&title=' + (this.title || '买新房') + '&searchUserId=' + this.getUserId()
+			title: this.title || '新房',
+			path: '/pages/index/houseDetail?id=' + this.id + '&title=' + (this.title || '新房') + '&searchUserId=' + this.getUserId()
 		};
 	},
 	methods: {
 		gotoGouseDetailImg() {
-			if (this.title !== '买新房') {
+			if (this.title !== '新房') {
 				return false;
 			}
 			uni.navigateTo({
@@ -372,17 +372,17 @@ export default {
 		},
 		getDetail() {
 			this.showLoading();
-			// 买新房
+			// 新房
 			let url = '/LouPanInfo/detail';
 			let formData = {
 				louPanId: this.id
 			};
-			if (this.title === '买新房') {
+			if (this.title === '新房') {
 				url = '/LouPanInfo/detail';
 				formData = {
 					louPanId: this.id
 				};
-			} else if (this.title === '买二手房' || this.title === '找租房') {
+			} else if (this.title === '二手房' || this.title === '找租房') {
 				url = '/rentSaleHouse/detail';
 				formData = {
 					id: this.id
@@ -406,11 +406,11 @@ export default {
 				success: res => {
 					uni.hideLoading();
 					console.log('楼盘详情', res);
-					if (this.title === '买新房' && res.data.code === 200) {
+					if (this.title === '新房' && res.data.code === 200) {
 						res.data.data.lightSpot = res.data.data.lightSpot ? res.data.data.lightSpot.split(',') : [];
 						this.houseInfo = res.data.data;
 						this.getAround(this.peitao[0].name);
-					} else if ((this.title === '买二手房' || this.title === '找租房') && res.data.code === 200) {
+					} else if ((this.title === '二手房' || this.title === '找租房') && res.data.code === 200) {
 						res.data.data.picUrlList = res.data.data.picUrls;
 						res.data.data.address = res.data.data.area + res.data.data.housingEstate;
 						res.data.data.year = res.data.data.year ? res.data.data.year.split(' ')[0] : '年份未知';

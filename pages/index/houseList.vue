@@ -31,6 +31,10 @@
 				</view>
 			</view>
 		</view>
+		
+		<view v-if="title!=='新房'" @click="gotoAddHouse" class="addHouse"> 
+			<text class="cuIcon cuIcon-add"></text>
+		</view>
 	</view>
 </template>
 
@@ -38,7 +42,7 @@
 export default {
 	data() {
 		return {
-			title: '买新房',
+			title: '新房',
 			houseListPage: 1,
 			list: []
 		};
@@ -50,13 +54,13 @@ export default {
 		});
 
 		switch (this.title) {
-			case '买新房':
+			case '新房':
 				this.getNewHouseList();
 				break;
 			case '找租房':
 				this.getAllRentHouse();
 				break;
-			case '买二手房':
+			case '二手房':
 				this.getAllSecondHandHouse();
 				break;
 			case '商铺':
@@ -69,19 +73,19 @@ export default {
 	},
 	onShareAppMessage() {
 		return {
-			title: this.title || '买新房',
-			path: '/pages/index/houseList?title=' + (this.title || '买新房') + '&searchUserId=' + this.getUserId()
+			title: this.title || '新房',
+			path: '/pages/index/houseList?title=' + (this.title || '新房') + '&searchUserId=' + this.getUserId()
 		};
 	},
 	onReachBottom() {
 		switch (this.title) {
-			case '买新房':
+			case '新房':
 				this.getNewHouseList();
 				break;
 			case '找租房':
 				this.getAllRentHouse();
 				break;
-			case '买二手房':
+			case '二手房':
 				this.getAllSecondHandHouse();
 				break;
 			case '商铺':
@@ -93,6 +97,29 @@ export default {
 		}
 	},
 	methods: {
+		gotoAddHouse(){
+			let url = '/pages/index/sellHouse?title=我要卖房&id=我要卖房'
+			switch (this.title) {
+				case '新房':
+					return false
+					break;
+				case '找租房':
+					url = '/pages/index/sellHouse?title=我要出租&id=我要出租'
+					break;
+				case '二手房':
+					url = '/pages/index/sellHouse?title=我要卖房&id=我要卖房'
+					break;
+				case '商铺':
+					url = '/pages/index/sellHouse?title=出租商铺&id=出租商铺'
+					break;
+				case '写字楼':
+					url = '/pages/index/sellHouse?title=出租写字楼&id=出租写字楼'
+					break;
+			}
+			uni.navigateTo({
+				url
+			})
+		},
 		getAllOfficeBuilding() {
 			this.showLoading();
 			this.request({
@@ -234,6 +261,19 @@ export default {
 
 <style lang="scss">
 .houseListView {
+	.addHouse{
+		background-color: #3383ff;
+		width: 90rpx;
+		height: 90rpx;
+		line-height: 90rpx;
+		border-radius: 50%;
+		color: #fff;
+		text-align: center;
+		font-size: 58rpx;
+		position:fixed ;
+		bottom: 30vh;
+		right: 20rpx;
+	}
 	.searchBox {
 		padding: 14rpx 20rpx;
 		margin-bottom: 8px;

@@ -130,16 +130,18 @@ export default {
 			// bannerList: [  'https://i.picsum.photos/id/957/750/350.jpg?hmac=YdAfSaOvsyFhv47TIsHp5O7-6H12ViGYipInnU3Z39o'],
 			menuList: [
 				[
-					{ name: '买新房', icon: '/static/indexmenu1.png', color: '#e95857', page: '/pages/index/houseList' },
-					{ name: '买二手房', icon: '/static/indexmenu2.png', color: '#70b436', page: '/pages/index/houseList' },
+					{ name: '新房', icon: '/static/indexmenu1.png', color: '#e95857', page: '/pages/index/houseList' },
+					{ name: '二手房', icon: '/static/indexmenu2.png', color: '#70b436', page: '/pages/index/houseList' },
 					{ name: '找租房', icon: '/static/indexmenu3.png', color: '#f09a53', page: '/pages/index/houseList' },
 					{ name: '商铺', icon: '/static/indexmenu4.png', color: '#f2ae56', page: '/pages/index/houseList' },
 					{ name: '写字楼', icon: '/static/indexmenu8.png', color: '#ec5d7f', page: '/pages/index/houseList' },
-					{ name: '我要卖房', icon: '/static/indexmenu6.png', color: '#619ef6', page: '/pages/index/sellHouse' },
-					{ name: '我要出租', icon: '/static/indexmenu7.png', color: '#5bb9dd', page: '/pages/index/sellHouse' },
-					{ name: '出租商铺', icon: '/static/indexmenu5.png', color: '#5ec7af', page: '/pages/index/sellHouse' },
-					{ name: '出租写字楼', icon: '/static/indexmenu10.png', color: '#ec5d7f', page: '/pages/index/sellHouse' },
+					// { name: '我要卖房', icon: '/static/indexmenu6.png', color: '#619ef6', page: '/pages/index/sellHouse' },
+					// { name: '我要出租', icon: '/static/indexmenu7.png', color: '#5bb9dd', page: '/pages/index/sellHouse' },
+					// { name: '出租商铺', icon: '/static/indexmenu5.png', color: '#5ec7af', page: '/pages/index/sellHouse' },
+					// { name: '出租写字楼', icon: '/static/indexmenu10.png', color: '#ec5d7f', page: '/pages/index/sellHouse' },
 					{ name: '经纪人', icon: '/static/indexmenu9.png', color: '#d9c18e', page: '/pages/index/brokerList' }
+					
+					
 					// { name: '房产公司', icon: '/static/indexmenu10.png', color: '#66acf4', page: '/pages/index/realCompanyList' }
 					// { name: '找小区', icon: '/static/indexmenu5.png', color: '#5ec7af', page: '/pages/index/houseList' },
 					// { name: '写字楼', icon: '/static/indexmenu8.png', color: '#ec5d7f', page: '/pages/index/houseList' },
@@ -311,7 +313,7 @@ export default {
 		height: 100%;
 		align-content: flex-start;
 		.item {
-			width: 20%;
+			width: 33%;
 			margin-bottom: 20px;
 			.iconBox {
 				width: 100rpx;
