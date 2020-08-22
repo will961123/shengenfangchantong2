@@ -94,7 +94,7 @@
 			<view
 				@click="navgater"
 				data-path="/pages/index/houseDetail"
-				data-title="买新房"
+				data-title="新房"
 				:data-id="item.louPanId"
 				data-type="houseDetail"
 				v-for="(item, index) in guessYouLike.list"
@@ -211,8 +211,13 @@ export default {
 				success:res=>{
 					console.log('status',res)
 					if(res.data.data === 'true'){
+						uni.setStorageSync('status',true)
 						this.encyclopedias.unshift({title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle'})
+					}else{
+						uni.setStorageSync('status',false)
 					}
+					
+					// uni.setStorageSync('status',true)
 				}
 			}) 
 		},

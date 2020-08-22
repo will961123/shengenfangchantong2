@@ -1,6 +1,14 @@
 <template>
 	<view class="roomChatView">
-		<view @click="gotoPostDetail" :data-id="item.microcosmId" v-for="(item, index) in postList" :key="index" class="postList flex bg-white">
+		<view  v-if="!status" class="newsItem bg-white flex justify-between">
+			<view style="flex: 1;" class="flex flex-direction justify-between">
+				<view class="title textov2">春暖花开，一起去游玩吧</view>
+				<view class="dateBox"><text>2020:08:08 21:21:21</text></view>
+			</view>
+			<image src="http://housecollection.oss-cn-beijing.aliyuncs.com/loupan-picture/infoPic/1587866609511_108.jpg" mode="aspectFill"></image>
+		</view>
+
+		<view v-else @click="gotoPostDetail" :data-id="item.microcosmId" v-for="(item, index) in postList" :key="index" class="postList flex bg-white">
 			<view class="headBox"><image :src="item.userInfo.avatar_url" mode="aspectFill"></image></view>
 			<view style="width: calc(100% - 100rpx);">
 				<view class="nameBox flex align-center">
@@ -41,8 +49,8 @@
 				</view>
 			</view>
 		</view>
-		
-		<will-nodata v-if="postList.length == 0" tittle="暂未开放"></will-nodata>
+
+		<!-- <will-nodata v-if="postList.length == 0" tittle="暂未开放"></will-nodata> -->
 	</view>
 </template>
 
@@ -51,15 +59,22 @@ export default {
 	data() {
 		return {
 			postList: [],
-			page: 1
+			page: 1,
+			status:false
 		};
 	},
 	onShow() {
-		this.page = 1
-		this.postList = []
+		this.page = 1;
+		this.postList = [];
 		this.getPostList();
 	},
-	onLoad() {},
+	onLoad() {
+		let status =  uni.getStorageSync('status')
+		if(status === true){
+			this.status = true
+		}
+		console.log(status);
+	},
 	onShareAppMessage() {
 		return {
 			title: '房聊',
@@ -101,6 +116,26 @@ export default {
 
 <style lang="scss">
 .roomChatView {
+	.newsItem {
+		padding: 20rpx 25rpx;
+		border-bottom: 1rpx solid #e9e9e9;
+		.title {
+			color: #333333;
+			font-size: 28rpx;
+		}
+		.dateBox {
+			font-size: 24rpx;
+			color: #999;
+			margin-right: 10rpx;
+			& > text {
+			}
+		}
+		& > image {
+			width: 250rpx;
+			height: 200rpx;
+			margin-left: 20rpx;
+		}
+	}
 	.postList {
 		padding: 20rpx 25rpx;
 		width: 100%;

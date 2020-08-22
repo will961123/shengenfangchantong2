@@ -1,5 +1,5 @@
 {
-    "name" : "圣恩房产通",
+    "name" : "房产汇Lite",
     "appid" : "__UNI__E8640A6",
     "description" : "",
     "versionName" : "1.0.0",
@@ -57,7 +57,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx0d059ba3c0d019a3",
+        "appid" : "wx5bbde1364477fc56",
         "setting" : {
             "urlCheck" : false
         },
@@ -94,7 +94,7 @@
                     }
                 },
                 "/h5upload" : {
-					 // "target" : "http://192.168.0.111:8075/mobile",
+                    // "target" : "http://192.168.0.111:8075/mobile",
                     "target" : "https://fangchantong.hnshengen.com/mobile",
                     "changeOrigin" : true,
                     "secure" : false,
