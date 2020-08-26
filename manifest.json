@@ -1,5 +1,5 @@
 {
-    "name" : "房产汇Lite",
+    "name" : "圣恩房产汇",
     "appid" : "__UNI__E8640A6",
     "description" : "",
     "versionName" : "1.0.0",
@@ -57,7 +57,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx5bbde1364477fc56",
+        "appid" : "wx6e87e9b90cf7785e",
         "setting" : {
             "urlCheck" : false
         },

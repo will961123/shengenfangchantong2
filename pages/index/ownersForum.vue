@@ -120,6 +120,11 @@ export default {
 			]
 		};
 	},
+	onLoad() {
+		uni.reLaunch({
+			url:'/pages/index/index'
+		})
+	},
 	methods: {
 		changeSortType(type) {
 			if (this.sortType === type) {

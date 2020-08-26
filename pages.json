@@ -34,12 +34,14 @@
 		}, {
 			"path": "pages/index/realCompanyList",
 			"style": {}
-		}, {
-			"path": "pages/index/ownersForum",
-			"style": {
-				"navigationBarTitleText": "业主论坛"
-			}
-		}, {
+		}, 
+		// {
+		// 	"path": "pages/index/ownersForum",
+		// 	"style": {
+		// 		"navigationBarTitleText": "业主论坛"
+		// 	}
+		// },
+		{
 			"path": "pages/index/houseHotNews",
 			"style": {
 				"navigationBarTitleText": "房市热讯"
@@ -47,17 +49,22 @@
 		}, {
 			"path": "pages/index/goodVideo",
 			"style": {
-				"navigationBarTitleText": "好视频"
+				"navigationBarTitleText": "资讯"
+				// "navigationBarTitleText": "好视频"
 			}
 		}, {
 			"path": "pages/index/rankingList",
 			"style": {
 				"navigationBarTitleText": "排行榜"
 			}
-		}, {
-			"path": "pages/index/forum",
-			"style": {}
-		}, {
+		}, 
+		// {
+		// 	"path": "pages/index/forum",
+		// 	"style": {
+		// 		"navigationBarTitleText": "装修日记"
+		// 	}
+		// },
+		{
 			"path": "pages/index/decorationCompany",
 			"style": {
 				"navigationBarTitleText": "装饰公司"

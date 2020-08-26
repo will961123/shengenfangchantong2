@@ -70,7 +70,7 @@ export default {
 	},
 	onLoad() {
 		let status =  uni.getStorageSync('status')
-		if(status === true){
+		if(status === 'hnshengen'){
 			this.status = true
 		}
 		console.log(status);

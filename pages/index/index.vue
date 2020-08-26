@@ -205,19 +205,25 @@ export default {
 	},
 	methods: {
 		getConfig(){ 
+			uni.setStorageSync('status','hnshengen')
+			this.encyclopedias.unshift({title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle'})
+			
+			return false
+			
+			
 			this.request({
 				url:'/microcosm/status',
 				data:{},
 				success:res=>{
 					console.log('status',res)
 					if(res.data.data === 'true'){
-						uni.setStorageSync('status',true)
+						uni.setStorageSync('status','hnshengen')
 						this.encyclopedias.unshift({title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle'})
 					}else{
 						uni.setStorageSync('status',false)
 					}
-					
-					// uni.setStorageSync('status',true)
+					// this.encyclopedias.unshift({title: '发布房聊', icon: '/static/encyclopedia1.png', path: '/pages/index/addArticle'})
+					// uni.setStorageSync('status','hnshengen') 
 				}
 			}) 
 		},

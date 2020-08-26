@@ -101,8 +101,11 @@ export default {
 				}
 			]
 		};
-	},
+	}, 
 	onLoad(options) {
+		uni.reLaunch({
+			url:'/pages/index/index'
+		})
 		options.title ? (this.title = options.title) : '';
 		switch (this.title) {
 			case '装修日记':

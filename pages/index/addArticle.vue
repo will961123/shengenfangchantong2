@@ -70,6 +70,14 @@ export default {
 			}
 		);
 	},
+	onLoad() {
+		let status = uni.getStorageSync('status');
+		if (status !== 'hnshengen') { 
+			uni.reLaunch({
+				url:"/pages/index/index"
+			})
+		}
+	},
 	methods: {
 		saveArticle() {
 			// let formData = this.article;
@@ -93,7 +101,7 @@ export default {
 				content: this.article.content,
 				address: this.article.address.address,
 				ids: this.imgSrcList.join(','),
-				userId:this.getUserId()
+				userId: this.getUserId()
 			};
 			if (!formData.content) {
 				this.showToast('请填写内容');
